@@ -1,20 +1,25 @@
 
-[[osio1]]
-    [Eka]
-        fi = Suomeksi \{foo} {0} ja {1} taas
-        sv = Ruotsiksi
-        en = Englanniksi
-    [Toka]
-        fi = Suomeksi 2
-        sv = Ruotsiksi 2
-        en = Englanniksi 2
 
-[[osio2]]
-    [Eka2]
-        fi = XSuomeksi
-        sv = XRuotsiksi
-        en = XEnglanniksi
-    [Toka2]
-        fi = XSuomeksi 2
-        sv = XRuotsiksi 2
-        en = XEnglanniksi 2
+
+=== Osio 1
+
+Eka
+    fi = Suomeksi \{foo} {0} ja {1} taas
+    sv = Ruotsiksi
+    en = Englanniksi
+Toka
+    fi = Suomeksi 2
+    sv = Ruotsiksi 2
+    en = Englanniksi 2
+
+======== Osio 2 ========
+
+Eka2
+    fi = XSuomeksi
+    sv = XRuotsiksi
+    en = XEnglanniksi
+
+Toka2
+    fi = XSuomeksi 2
+    sv = XRuotsiksi 2
+    en = XEnglanniksi 2

@@ -131,30 +131,31 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
     for scanner.Scan() {
         lineNumber++
 
-        line := strings.TrimSpace(scanner.Text())
+        rawLine := scanner.Text()
+        trimmedLine := strings.TrimSpace(rawLine)
 
-        if len(line) == 0 {
+        if len(trimmedLine) == 0 {
             continue
         }
 
-        if strings.HasPrefix(line, "[[") && strings.HasSuffix(line, "]]") {
-            currentSection = set.AddSection(line[2:len(line)-2])
-        } else if strings.HasPrefix(line, "[") && strings.HasSuffix(line, "]") {
+        if strings.HasPrefix(trimmedLine, "===") {
+            currentSection = set.AddSection(strings.Trim(trimmedLine, "= "))
+        } else if !strings.HasPrefix(rawLine, "  ") {
             if currentSection == nil {
-                ReportParserError(lineNumber, "Loose translation not in a section: " + line)
+                ReportParserError(lineNumber, "Loose translation not in a section: " + rawLine)
             } else {
-                currentTranslation = currentSection.AddTranslation(line[1:len(line)-1])
+                currentTranslation = currentSection.AddTranslation(trimmedLine)
             }
         } else {
             if currentTranslation == nil {
-                ReportParserError(lineNumber, "Loose line not in a translation block: " + line)
+                ReportParserError(lineNumber, "Loose line not in a translation block: " + rawLine)
             } else {
-                separatorIndex := strings.Index(line, "=")
+                separatorIndex := strings.Index(trimmedLine, "=")
                 if separatorIndex == -1 {
-                    ReportParserError(lineNumber, "Cannot find separator '=' on line: " + line)
+                    ReportParserError(lineNumber, "Cannot find separator '=' on line: " + rawLine)
                 } else {
-                    language := strings.TrimSpace(line[0:separatorIndex])
-                    value := strings.TrimSpace(line[separatorIndex+1:])
+                    language := strings.TrimSpace(trimmedLine[0:separatorIndex])
+                    value := strings.TrimSpace(trimmedLine[separatorIndex+1:])
                     currentTranslation.AddValue(language, NewSegmentsFromValue(value))
                     set.Languages[language] = true
                 }

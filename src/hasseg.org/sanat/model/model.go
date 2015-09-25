@@ -4,8 +4,21 @@ import (
     _ "fmt"
 )
 
+type TranslationFormatDataType int
+
+const (
+    DataTypeObject TranslationFormatDataType = iota
+    DataTypeInteger TranslationFormatDataType = iota
+    DataTypeString TranslationFormatDataType = iota
+    DataTypeFloat TranslationFormatDataType = iota
+)
+
 type TranslationValueSegment struct {
     Text string
+    IsFormatSpecifier bool
+    SemanticOrderIndex int
+    DataType TranslationFormatDataType
+    NumberOfDecimals int
 }
 
 type TranslationValue struct {
@@ -44,4 +57,19 @@ func (section *TranslationSection) AddTranslation(key string) *Translation {
 func (translation *Translation) AddValue(language string, segments []TranslationValueSegment) *TranslationValue {
     translation.Values = append(translation.Values, TranslationValue{Language: language, Segments: segments})
     return &translation.Values[len(translation.Values)-1]
+}
+
+func NewTextSegment(text string) TranslationValueSegment {
+    return TranslationValueSegment{Text: text}
+}
+
+func NewFormatSpecifierSegment(dataType TranslationFormatDataType,
+                               numDecimals int,
+                               semanticOrderIndex int) TranslationValueSegment {
+    return TranslationValueSegment{
+        IsFormatSpecifier: true,
+        SemanticOrderIndex: semanticOrderIndex,
+        DataType: dataType,
+        NumberOfDecimals: numDecimals,
+    }
 }

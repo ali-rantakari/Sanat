@@ -2,14 +2,35 @@ package output
 
 import (
     "fmt"
+    "strconv"
     "hasseg.org/sanat/model"
 )
 
+func AppleFormatSpecifierStringForFormatSpecifier(segment model.TranslationValueSegment) string {
+    ret := "%"
+    if 0 < segment.SemanticOrderIndex {
+        ret += strconv.Itoa(segment.SemanticOrderIndex) + "$"
+    }
+    if segment.DataType == model.DataTypeFloat && 0 <= segment.NumberOfDecimals {
+        ret += "." + strconv.Itoa(segment.NumberOfDecimals)
+    }
+    switch segment.DataType {
+        case model.DataTypeString: ret += "s"
+        case model.DataTypeInteger: ret += "d"
+        case model.DataTypeFloat: ret += "f"
+        case model.DataTypeObject: ret += "@"
+    }
+    return ret
+}
+
 func AppleStringFromSegments(segments []model.TranslationValueSegment) string {
-    // TODO
     ret := ""
     for _,segment := range segments {
-        ret += segment.Text
+        if segment.IsFormatSpecifier {
+            ret += AppleFormatSpecifierStringForFormatSpecifier(segment)
+        } else {
+            ret += segment.Text
+        }
     }
     return ret
 }

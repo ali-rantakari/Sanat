@@ -1,7 +1,7 @@
 
 [[osio1]]
     [Eka]
-        fi = Suomeksi
+        fi = Suomeksi \{foo} {0} ja {1} taas
         sv = Ruotsiksi
         en = Englanniksi
     [Toka]

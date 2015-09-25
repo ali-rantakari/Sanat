@@ -12,10 +12,53 @@ func ReportParserError(lineNumber int, message string) {
     fmt.Fprintln(os.Stderr, "ERROR: Parser error:", message)
 }
 
+func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
+    numDecimals := -1
+    semanticOrderIndex := -1
+    return model.NewFormatSpecifierSegment(model.DataTypeObject, numDecimals, semanticOrderIndex)
+}
+
 func NewSegmentsFromValue(text string) []model.TranslationValueSegment {
-    // TODO
     ret := make([]model.TranslationValueSegment, 0)
-    ret = append(ret, model.TranslationValueSegment{Text: text})
+
+    scanner := bufio.NewScanner(strings.NewReader(text))
+    scanner.Split(bufio.ScanRunes)
+
+    scanUntilEndOfFormatSpecifier := func (scanner *bufio.Scanner) string {
+        accumulatedString := ""
+        for scanner.Scan() {
+            c := scanner.Text()
+            if c == "}" {
+                break
+            }
+            accumulatedString += c
+        }
+        return accumulatedString
+    }
+
+    accumulatedString := ""
+    for scanner.Scan() {
+        c := scanner.Text()
+        if c == "\\" {
+            scanner.Scan()
+            accumulatedString += scanner.Text()
+            continue
+        }
+        if c == "{" {
+            ret = append(ret, model.NewTextSegment(accumulatedString))
+            accumulatedString = ""
+
+            specifierText := scanUntilEndOfFormatSpecifier(scanner)
+            ret = append(ret, NewFormatSpecifierSegmentFromSpecifierText(specifierText))
+            continue
+        }
+        accumulatedString += c
+    }
+
+    if 0 < len(accumulatedString) {
+        ret = append(ret, model.NewTextSegment(accumulatedString))
+    }
+
     return ret
 }
 

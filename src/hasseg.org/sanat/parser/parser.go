@@ -155,6 +155,9 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
                 } else {
                     language := strings.TrimSpace(trimmedLine[0:separatorIndex])
                     value := strings.TrimSpace(trimmedLine[separatorIndex+1:])
+                    if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
+                        value = value[1:len(value)-1]
+                    }
                     currentTranslation.AddValue(language, NewSegmentsFromValue(value))
                     set.Languages[language] = true
                 }

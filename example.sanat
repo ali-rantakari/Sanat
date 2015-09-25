@@ -14,9 +14,9 @@ Eka
     sv = Ruotsiksi
     en = Englanniksi
 Toka
-    fi = Suomeksi 2
-    sv = Ruotsiksi 2
-    en = Englanniksi 2
+    fi = \"Suomeksi 2"
+    sv = "Ruotsiksi 2 "
+    en = " Englanniksi 2"
 
 ======== Osio 2 ========
 

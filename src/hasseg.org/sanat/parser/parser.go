@@ -41,8 +41,14 @@ func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationVa
         semanticOrderIndex = -1
     }
 
+    defaultDataType := model.DataTypeObject
+
+    if len(s) == 0 {
+        return model.NewFormatSpecifierSegment(defaultDataType, -1, -1)
+    }
+
     // Read data type indicator
-    dataType := model.DataTypeObject
+    dataType := defaultDataType
     switch strings.ToLower(s[0:1]) {
         case "@": dataType = model.DataTypeObject
         case "f": dataType = model.DataTypeFloat

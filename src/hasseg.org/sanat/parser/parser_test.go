@@ -20,6 +20,7 @@ func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
     ass("{d}", seg(model.DataTypeInteger, -1, -1))
     ass("{f}", seg(model.DataTypeFloat, -1, -1))
     ass("{s}", seg(model.DataTypeString, -1, -1))
+    ass("{}", seg(model.DataTypeObject, -1, -1)) // default
 
     // Semantic order index
     assert.Equal(t, seg(model.DataTypeObject, -1, -1), val("{0:@}"), "Order index 0 = none at all")

@@ -35,3 +35,39 @@ func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
     // Combination
     ass("{1:f.2}", seg(model.DataTypeFloat, 2, 1))
 }
+
+func TestNewSegmentsFromValue(t *testing.T) {
+    assertCount := func(segments []model.TranslationValueSegment, expectedCount int) {
+        assert.Equal(t, expectedCount, len(segments), "Expected count")
+    }
+    assertTextSegment := func(segments []model.TranslationValueSegment, index int, expectedValue string) {
+        assert.Equal(t, model.NewTextSegment(expectedValue), segments[index], "Expected item at index")
+    }
+    assertSpecSegment := func(segments []model.TranslationValueSegment, index int, expectedDataType model.TranslationFormatDataType) {
+        assert.Equal(t, expectedDataType, segments[index].DataType, "Expected item at index")
+    }
+
+    {
+        segments := parser.NewSegmentsFromValue("")
+        assertCount(segments, 0)
+    }
+    {
+        segments := parser.NewSegmentsFromValue(" ")
+        assertCount(segments, 1)
+        assertTextSegment(segments, 0, " ")
+    }
+    {
+        segments := parser.NewSegmentsFromValue("Eka{d}toka{@}")
+        assertCount(segments, 4)
+        assertTextSegment(segments, 0, "Eka")
+        assertSpecSegment(segments, 1, model.DataTypeInteger)
+        assertTextSegment(segments, 2, "toka")
+        assertSpecSegment(segments, 3, model.DataTypeObject)
+    }
+    {
+        segments := parser.NewSegmentsFromValue("Eka\\{d}toka{@}")
+        assertCount(segments, 2)
+        assertTextSegment(segments, 0, "Eka{d}toka")
+        assertSpecSegment(segments, 1, model.DataTypeObject)
+    }
+}

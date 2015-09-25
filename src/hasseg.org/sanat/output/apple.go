@@ -49,7 +49,9 @@ func getAppleStringsFileContents(set model.TranslationSet, language string) stri
            " * Language: " + language + "\n" +
            " */"
     for _,section := range set.Sections {
-        ret += "\n/********** " + section.Name + " **********/\n"
+        if 0 < len(section.Name) {
+            ret += "\n/********** " + section.Name + " **********/\n"
+        }
         for _,translation := range section.Translations {
             for _,value := range translation.Values {
                 if value.Language == language {

@@ -1,7 +1,7 @@
 
 # Kommentti
 Vapaa
-    fi = Vapaa \{foo} {0} ja {1} taas
+    fi = Vapaa \{foo} {@} ja {@} taas
     sv = Hej då
     en = What up
 
@@ -10,7 +10,7 @@ Vapaa
 
 Eka
     # Kommentti
-    fi = Suomeksi \{foo} {0} ja {1} taas
+    fi = Suomeksi \{foo} {@} ja {@} taas
     sv = Ruotsiksi
     en = Englanniksi
 Toka

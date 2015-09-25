@@ -38,10 +38,11 @@ type TranslationSection struct {
 
 type TranslationSet struct {
     Sections []TranslationSection
+    Languages map[string]bool
 }
 
 func NewTranslationSet() TranslationSet {
-    return TranslationSet{}
+    return TranslationSet{Languages: make(map[string]bool)}
 }
 
 func (set *TranslationSet) AddSection(name string) *TranslationSection {

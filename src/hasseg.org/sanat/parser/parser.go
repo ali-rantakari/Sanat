@@ -153,9 +153,10 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
                 if separatorIndex == -1 {
                     ReportParserError(lineNumber, "Cannot find separator '=' on line: " + line)
                 } else {
-                    key := strings.TrimSpace(line[0:separatorIndex])
+                    language := strings.TrimSpace(line[0:separatorIndex])
                     value := strings.TrimSpace(line[separatorIndex+1:])
-                    currentTranslation.AddValue(key, NewSegmentsFromValue(value))
+                    currentTranslation.AddValue(language, NewSegmentsFromValue(value))
+                    set.Languages[language] = true
                 }
             }
         }

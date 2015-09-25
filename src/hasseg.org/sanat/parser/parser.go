@@ -134,7 +134,7 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
         rawLine := scanner.Text()
         trimmedLine := strings.TrimSpace(rawLine)
 
-        if len(trimmedLine) == 0 {
+        if len(trimmedLine) == 0 || strings.HasPrefix(trimmedLine, "#") {
             continue
         }
 

@@ -1,4 +1,5 @@
 
+# Kommentti
 Vapaa
     fi = Vapaa \{foo} {0} ja {1} taas
     sv = Hej då
@@ -8,6 +9,7 @@ Vapaa
 === Osio 1
 
 Eka
+    # Kommentti
     fi = Suomeksi \{foo} {0} ja {1} taas
     sv = Ruotsiksi
     en = Englanniksi

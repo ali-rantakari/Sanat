@@ -141,11 +141,10 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
         if strings.HasPrefix(trimmedLine, "===") {
             currentSection = set.AddSection(strings.Trim(trimmedLine, "= "))
         } else if !strings.HasPrefix(rawLine, "  ") {
-            if currentSection == nil {
-                ReportParserError(lineNumber, "Loose translation not in a section: " + rawLine)
-            } else {
-                currentTranslation = currentSection.AddTranslation(trimmedLine)
+            if currentSection == nil { // Add implicit default section if needed
+                currentSection = set.AddSection("")
             }
+            currentTranslation = currentSection.AddTranslation(trimmedLine)
         } else {
             if currentTranslation == nil {
                 ReportParserError(lineNumber, "Loose line not in a translation block: " + rawLine)

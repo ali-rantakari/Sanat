@@ -1,4 +1,8 @@
 
+Vapaa
+    fi = Vapaa \{foo} {0} ja {1} taas
+    sv = Hej då
+    en = What up
 
 
 === Osio 1

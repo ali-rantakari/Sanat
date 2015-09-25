@@ -24,7 +24,7 @@ func StringForFormatSpecifier(segment model.TranslationValueSegment) string {
     return ret
 }
 
-func DumpTranslationSet(set model.TranslationSet) {
+func DumpTranslationSet(set model.TranslationSet, outputDirPath string) {
     fmt.Println("Languages:", set.Languages)
     for _,section := range set.Sections {
         fmt.Println("Section: " + section.Name)

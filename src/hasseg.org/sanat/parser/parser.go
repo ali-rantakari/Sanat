@@ -5,6 +5,7 @@ import (
     "bufio"
     "fmt"
     "strings"
+    "strconv"
     "hasseg.org/sanat/model"
 )
 
@@ -12,10 +13,57 @@ func ReportParserError(lineNumber int, message string) {
     fmt.Fprintln(os.Stderr, "ERROR: Parser error:", message)
 }
 
+func IntFromString(s string) int {
+    parsedInt, err := strconv.Atoi(s)
+    if err == nil {
+        return parsedInt
+    } else {
+        ReportParserError(0, err.Error())
+        return 0
+    }
+}
+
 func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
-    numDecimals := -1
+    s := strings.TrimRight(strings.TrimLeft(text, "{"), "}")
+
+    // Read (potential) semantic order index
+    // {a:xxx}
+    //  ~
     semanticOrderIndex := -1
-    return model.NewFormatSpecifierSegment(model.DataTypeObject, numDecimals, semanticOrderIndex)
+    orderSeparatorIndex := strings.Index(s, ":")
+    if orderSeparatorIndex != -1 {
+        if 0 < orderSeparatorIndex {
+            semanticOrderIndex = IntFromString(s[0:orderSeparatorIndex])
+        }
+        s = s[orderSeparatorIndex+1:]
+    }
+    if semanticOrderIndex == 0 { // normalize: -1 means "none"
+        semanticOrderIndex = -1
+    }
+
+    // Read data type indicator
+    dataType := model.DataTypeObject
+    switch strings.ToLower(s[0:1]) {
+        case "@": dataType = model.DataTypeObject
+        case "f": dataType = model.DataTypeFloat
+        case "d": dataType = model.DataTypeInteger
+        case "s": dataType = model.DataTypeString
+    }
+    s = s[1:]
+
+    // Read (potential) decimal count
+    numDecimals := -1
+    if dataType == model.DataTypeFloat {
+        decimalCountIndex := strings.Index(s, ".")
+        if decimalCountIndex != -1 {
+            decimalCountString := s[decimalCountIndex+1:]
+            if 0 < len(decimalCountString) {
+                numDecimals = IntFromString(decimalCountString)
+            }
+        }
+    }
+
+    return model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex)
 }
 
 func NewSegmentsFromValue(text string) []model.TranslationValueSegment {

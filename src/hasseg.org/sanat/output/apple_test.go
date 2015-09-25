@@ -34,3 +34,15 @@ func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {
     assert.Equal(t, "%s", val(model.DataTypeString, 1, -1), "Decimal count is only for floats")
     assert.Equal(t, "%d", val(model.DataTypeInteger, 1, -1), "Decimal count is only for floats")
 }
+
+func TestTextSanitizedForAppleString(t *testing.T) {
+    ass := func(expected string, input string) {
+        assert.Equal(t, expected, output.TextSanitizedForAppleString(input), input)
+    }
+
+    ass("", "")
+    ass("Foo", "Foo")
+    ass("Per %% cent", "Per % cent")
+    ass("Foo %%@", "Foo %@")
+    ass("Foo %%@ %%@ %%@", "Foo %@ %@ %@")
+}

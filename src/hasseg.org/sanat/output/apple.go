@@ -5,6 +5,7 @@ import (
     "os"
     "path"
     "strconv"
+    "strings"
     "hasseg.org/sanat/model"
 )
     
@@ -31,13 +32,17 @@ func AppleFormatSpecifierStringForFormatSpecifier(segment model.TranslationValue
     return ret
 }
 
+func TextSanitizedForAppleString(text string) string {
+    return strings.Replace(text, "%", "%%", -1)
+}
+
 func AppleStringFromSegments(segments []model.TranslationValueSegment) string {
     ret := ""
     for _,segment := range segments {
         if segment.IsFormatSpecifier {
             ret += AppleFormatSpecifierStringForFormatSpecifier(segment)
         } else {
-            ret += segment.Text
+            ret += TextSanitizedForAppleString(segment.Text)
         }
     }
     return ret

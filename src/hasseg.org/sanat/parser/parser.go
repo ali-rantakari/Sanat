@@ -12,6 +12,13 @@ func ReportParserError(lineNumber int, message string) {
     fmt.Fprintln(os.Stderr, "ERROR: Parser error:", message)
 }
 
+func NewSegmentsFromValue(text string) []model.TranslationValueSegment {
+    // TODO
+    ret := make([]model.TranslationValueSegment, 0)
+    ret = append(ret, model.TranslationValueSegment{Text: text})
+    return ret
+}
+
 func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
     f, err := os.Open(inputPath)
     if err != nil {
@@ -51,7 +58,7 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
                 } else {
                     key := strings.TrimSpace(line[0:separatorIndex])
                     value := strings.TrimSpace(line[separatorIndex+1:])
-                    currentTranslation.AddValue(key, value)
+                    currentTranslation.AddValue(key, NewSegmentsFromValue(value))
                 }
             }
         }

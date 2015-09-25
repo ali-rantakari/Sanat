@@ -5,6 +5,15 @@ import (
     "hasseg.org/sanat/model"
 )
 
+func AppleStringFromSegments(segments []model.TranslationValueSegment) string {
+    // TODO
+    ret := ""
+    for _,segment := range segments {
+        ret += segment.Text
+    }
+    return ret
+}
+
 func WriteAppleStringsFile(set model.TranslationSet, language string) {
     fmt.Println("/**\n" +
                 " * Apple Strings File\n" +
@@ -16,7 +25,9 @@ func WriteAppleStringsFile(set model.TranslationSet, language string) {
         for _,translation := range section.Translations {
             for _,value := range translation.Values {
                 if value.Language == language {
-                    fmt.Printf("\"%s\" = \"%s\";\n", translation.Key, value.Text)
+                    fmt.Printf("\"%s\" = \"%s\";\n",
+                               translation.Key,
+                               AppleStringFromSegments(value.Segments))
                 }
             }
         }

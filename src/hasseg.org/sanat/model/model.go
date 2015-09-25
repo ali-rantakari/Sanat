@@ -4,9 +4,13 @@ import (
     _ "fmt"
 )
 
+type TranslationValueSegment struct {
+    Text string
+}
+
 type TranslationValue struct {
     Language string
-    Text string
+    Segments []TranslationValueSegment
 }
 
 type Translation struct {
@@ -37,7 +41,7 @@ func (section *TranslationSection) AddTranslation(key string) *Translation {
     return &section.Translations[len(section.Translations)-1]
 }
 
-func (translation *Translation) AddValue(language string, text string) *TranslationValue {
-    translation.Values = append(translation.Values, TranslationValue{Language: language, Text: text})
+func (translation *Translation) AddValue(language string, segments []TranslationValueSegment) *TranslationValue {
+    translation.Values = append(translation.Values, TranslationValue{Language: language, Segments: segments})
     return &translation.Values[len(translation.Values)-1]
 }

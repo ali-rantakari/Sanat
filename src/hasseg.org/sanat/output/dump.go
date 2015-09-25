@@ -11,7 +11,10 @@ func DumpTranslationSet(set model.TranslationSet) {
         for _,translation := range section.Translations {
             fmt.Println("  Translation: " + translation.Key)
             for _,value := range translation.Values {
-                fmt.Println("    Value: " + value.Language + " = " + value.Text)
+                fmt.Println("    Value: " + value.Language)
+                for _,segment := range value.Segments {
+                fmt.Println("      Segment: " + segment.Text)
+                }
             }
         }
     }

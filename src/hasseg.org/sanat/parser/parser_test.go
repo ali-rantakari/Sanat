@@ -1,14 +1,14 @@
-package parser_test
+package parser
 
 import (
     "testing"
     "github.com/stretchr/testify/assert"
-    "hasseg.org/sanat/parser"
     "hasseg.org/sanat/model"
 )
 
 func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
-    val := parser.NewFormatSpecifierSegmentFromSpecifierText
+    p := translationParser{}
+    val := p.newFormatSpecifierSegmentFromSpecifierText
     seg := model.NewFormatSpecifierSegment
 
     ass := func(f string, s model.TranslationValueSegment) {
@@ -37,6 +37,8 @@ func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
 }
 
 func TestNewSegmentsFromValue(t *testing.T) {
+    p := translationParser{}
+
     assertCount := func(segments []model.TranslationValueSegment, expectedCount int) {
         assert.Equal(t, expectedCount, len(segments), "Expected count")
     }
@@ -48,16 +50,16 @@ func TestNewSegmentsFromValue(t *testing.T) {
     }
 
     {
-        segments := parser.NewSegmentsFromValue("")
+        segments := p.newSegmentsFromValue("")
         assertCount(segments, 0)
     }
     {
-        segments := parser.NewSegmentsFromValue(" ")
+        segments := p.newSegmentsFromValue(" ")
         assertCount(segments, 1)
         assertTextSegment(segments, 0, " ")
     }
     {
-        segments := parser.NewSegmentsFromValue("Eka{d}toka{@}")
+        segments := p.newSegmentsFromValue("Eka{d}toka{@}")
         assertCount(segments, 4)
         assertTextSegment(segments, 0, "Eka")
         assertSpecSegment(segments, 1, model.DataTypeInteger)
@@ -65,7 +67,7 @@ func TestNewSegmentsFromValue(t *testing.T) {
         assertSpecSegment(segments, 3, model.DataTypeObject)
     }
     {
-        segments := parser.NewSegmentsFromValue("Eka\\{d}toka{@}")
+        segments := p.newSegmentsFromValue("Eka\\{d}toka{@}")
         assertCount(segments, 2)
         assertTextSegment(segments, 0, "Eka{d}toka")
         assertSpecSegment(segments, 1, model.DataTypeObject)

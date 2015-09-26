@@ -27,6 +27,8 @@ func StringForFormatSpecifier(segment model.TranslationValueSegment) string {
 func StringForPlatform(platform model.TranslationPlatform) string {
     switch platform {
         case model.PlatformApple: return "Apple"
+        case model.PlatformAndroid: return "Android"
+        case model.PlatformWindows: return "Windows"
     }
     return "??"
 }

@@ -90,6 +90,8 @@ func (p translationParser) platformsFromCommaSeparatedString(text string) []mode
         platform := model.PlatformNone
         switch strings.ToLower(s) {
             case "apple": platform = model.PlatformApple
+            case "android": platform = model.PlatformAndroid
+            case "windows": platform = model.PlatformWindows
         }
         if platform == model.PlatformNone {
             p.reportError("Unknown platform value: '"+s+"'")

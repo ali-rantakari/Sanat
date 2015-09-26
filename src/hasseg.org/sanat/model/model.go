@@ -17,6 +17,8 @@ type TranslationPlatform int
 const (
     PlatformNone TranslationPlatform = iota
     PlatformApple TranslationPlatform = iota
+    PlatformAndroid TranslationPlatform = iota
+    PlatformWindows TranslationPlatform = iota
 )
 
 type TranslationValueSegment struct {

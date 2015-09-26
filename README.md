@@ -44,6 +44,21 @@ The translation text content may be double quoted:
 
         fi = "Kirjaudu sisään "
 
+#### Platform limits
+
+Translations can be limited to certain platforms like so:
+
+    LoginView.Title
+        en = Log in
+        fi = Kirjaudu sisään
+        platforms = apple, android
+
+Translations that specify platforms will only be rendered in the translation output files for those platforms (and not for others.)
+
+The currently supported values are:
+
+- `apple` (Apple platforms; iOS and OS X)
+
 
 ### Format specifiers
 

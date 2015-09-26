@@ -76,6 +76,29 @@ func (p translationParser) newFormatSpecifierSegmentFromSpecifierText(text strin
     return model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex)
 }
 
+func componentsInCommaSeparatedList(text string) []string {
+    ret := make([]string, 0)
+    for _,s := range strings.Split(text, ",") {
+        ret = append(ret, strings.TrimSpace(s))
+    }
+    return ret
+}
+
+func (p translationParser) platformsFromCommaSeparatedString(text string) []model.TranslationPlatform {
+    ret := make([]model.TranslationPlatform, 0)
+    for _,s := range componentsInCommaSeparatedList(text) {
+        platform := model.PlatformNone
+        switch strings.ToLower(s) {
+            case "apple": platform = model.PlatformApple
+        }
+        if platform == model.PlatformNone {
+            p.reportError("Unknown platform value: '"+s+"'")
+        } else {
+            ret = append(ret, platform)
+        }
+    }
+    return ret
+}
 
 func (p translationParser) newSegmentsFromValue(text string) []model.TranslationValueSegment {
     ret := make([]model.TranslationValueSegment, 0)
@@ -162,8 +185,12 @@ func (p translationParser) parseTranslationSet(inputPath string) model.Translati
                     if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
                         value = value[1:len(value)-1]
                     }
-                    currentTranslation.AddValue(key, p.newSegmentsFromValue(value))
-                    set.Languages[key] = true
+                    if strings.ToLower(key) == "platforms" {
+                        currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
+                    } else {
+                        currentTranslation.AddValue(key, p.newSegmentsFromValue(value))
+                        set.Languages[key] = true
+                    }
                 }
             }
         }

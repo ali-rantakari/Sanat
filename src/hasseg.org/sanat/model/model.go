@@ -14,6 +14,12 @@ const (
     DataTypeFloat TranslationFormatDataType = iota
 )
 
+type TranslationPlatform int
+const (
+    PlatformNone TranslationPlatform = iota
+    PlatformApple TranslationPlatform = iota
+)
+
 type TranslationValueSegment struct {
     Text string
     IsFormatSpecifier bool
@@ -30,6 +36,7 @@ type TranslationValue struct {
 type Translation struct {
     Key string
     Values []TranslationValue
+    Platforms []TranslationPlatform
 }
 
 type TranslationSection struct {

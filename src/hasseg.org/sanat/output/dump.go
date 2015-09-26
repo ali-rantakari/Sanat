@@ -24,12 +24,24 @@ func StringForFormatSpecifier(segment model.TranslationValueSegment) string {
     return ret
 }
 
+func StringForPlatform(platform model.TranslationPlatform) string {
+    switch platform {
+        case model.PlatformApple: return "Apple"
+    }
+    return "??"
+}
+
 func DumpTranslationSet(set model.TranslationSet, outputDirPath string) {
     fmt.Println("Languages:", set.Languages)
     for _,section := range set.Sections {
         fmt.Println("Section: " + section.Name)
         for _,translation := range section.Translations {
             fmt.Println("  Translation: " + translation.Key)
+            if 0 < len(translation.Platforms) {
+                for _,platform := range translation.Platforms {
+                    fmt.Println("    Platform: " + StringForPlatform(platform))
+                }
+            }
             for _,value := range translation.Values {
                 fmt.Println("    Language: " + value.Language)
                 for _,segment := range value.Segments {

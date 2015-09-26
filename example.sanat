@@ -14,6 +14,7 @@ Eka
     sv = Ruotsiksi
     en = Englanniksi
 Toka
+    platforms = foo, apple
     fi = \"Suomeksi 2"
     sv = "Ruotsiksi 2 "
     en = " Englanniksi 2"

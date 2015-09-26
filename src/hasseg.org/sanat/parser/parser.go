@@ -13,11 +13,11 @@ type translationParser struct {
     lineNumber int
 }
 
-func (p translationParser) reportError(message string) {
+func (p *translationParser) reportError(message string) {
     fmt.Fprintln(os.Stderr, "ERROR on line", p.lineNumber, message)
 }
 
-func (p translationParser) intFromString(s string) int {
+func (p *translationParser) intFromString(s string) int {
     parsedInt, err := strconv.Atoi(s)
     if err == nil {
         return parsedInt
@@ -27,7 +27,7 @@ func (p translationParser) intFromString(s string) int {
     }
 }
 
-func (p translationParser) newFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
+func (p *translationParser) newFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
     s := strings.TrimRight(strings.TrimLeft(text, "{"), "}")
 
     // Read (potential) semantic order index
@@ -84,7 +84,7 @@ func componentsInCommaSeparatedList(text string) []string {
     return ret
 }
 
-func (p translationParser) platformsFromCommaSeparatedString(text string) []model.TranslationPlatform {
+func (p *translationParser) platformsFromCommaSeparatedString(text string) []model.TranslationPlatform {
     ret := make([]model.TranslationPlatform, 0)
     for _,s := range componentsInCommaSeparatedList(text) {
         platform := model.PlatformNone
@@ -102,7 +102,7 @@ func (p translationParser) platformsFromCommaSeparatedString(text string) []mode
     return ret
 }
 
-func (p translationParser) newSegmentsFromValue(text string) []model.TranslationValueSegment {
+func (p *translationParser) newSegmentsFromValue(text string) []model.TranslationValueSegment {
     ret := make([]model.TranslationValueSegment, 0)
 
     scanner := bufio.NewScanner(strings.NewReader(text))
@@ -146,7 +146,7 @@ func (p translationParser) newSegmentsFromValue(text string) []model.Translation
     return ret
 }
 
-func (p translationParser) parseTranslationSet(inputPath string) model.TranslationSet {
+func (p *translationParser) parseTranslationSet(inputPath string) model.TranslationSet {
     f, err := os.Open(inputPath)
     if err != nil {
         panic(err)

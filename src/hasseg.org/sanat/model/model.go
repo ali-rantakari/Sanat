@@ -7,6 +7,7 @@ import (
 type TranslationFormatDataType int
 
 const (
+    DataTypeNone TranslationFormatDataType = iota
     DataTypeObject TranslationFormatDataType = iota
     DataTypeInteger TranslationFormatDataType = iota
     DataTypeString TranslationFormatDataType = iota

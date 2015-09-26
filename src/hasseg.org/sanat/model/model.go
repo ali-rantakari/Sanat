@@ -69,6 +69,18 @@ func (translation *Translation) AddValue(language string, segments []Translation
     return &translation.Values[len(translation.Values)-1]
 }
 
+func (translation Translation) IsForPlatform(givenPlatform TranslationPlatform) bool {
+    if len(translation.Platforms) == 0 {
+        return true
+    }
+    for _,platform := range translation.Platforms {
+        if platform == givenPlatform {
+            return true
+        }
+    }
+    return false
+}
+
 func NewTextSegment(text string) TranslationValueSegment {
     return TranslationValueSegment{Text: text}
 }

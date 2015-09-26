@@ -9,21 +9,25 @@ import (
     "hasseg.org/sanat/model"
 )
 
-func ReportParserError(lineNumber int, message string) {
-    fmt.Fprintln(os.Stderr, "ERROR: Parser error:", message)
+type translationParser struct {
+    lineNumber int
 }
 
-func IntFromString(s string) int {
+func (p translationParser) reportError(message string) {
+    fmt.Fprintln(os.Stderr, "ERROR on line", p.lineNumber, message)
+}
+
+func (p translationParser) intFromString(s string) int {
     parsedInt, err := strconv.Atoi(s)
     if err == nil {
         return parsedInt
     } else {
-        ReportParserError(0, err.Error())
+        p.reportError(err.Error())
         return 0
     }
 }
 
-func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
+func (p translationParser) newFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
     s := strings.TrimRight(strings.TrimLeft(text, "{"), "}")
 
     // Read (potential) semantic order index
@@ -33,7 +37,7 @@ func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationVa
     orderSeparatorIndex := strings.Index(s, ":")
     if orderSeparatorIndex != -1 {
         if 0 < orderSeparatorIndex {
-            semanticOrderIndex = IntFromString(s[0:orderSeparatorIndex])
+            semanticOrderIndex = p.intFromString(s[0:orderSeparatorIndex])
         }
         s = s[orderSeparatorIndex+1:]
     }
@@ -64,7 +68,7 @@ func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationVa
         if decimalCountIndex != -1 {
             decimalCountString := s[decimalCountIndex+1:]
             if 0 < len(decimalCountString) {
-                numDecimals = IntFromString(decimalCountString)
+                numDecimals = p.intFromString(decimalCountString)
             }
         }
     }
@@ -72,7 +76,8 @@ func NewFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationVa
     return model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex)
 }
 
-func NewSegmentsFromValue(text string) []model.TranslationValueSegment {
+
+func (p translationParser) newSegmentsFromValue(text string) []model.TranslationValueSegment {
     ret := make([]model.TranslationValueSegment, 0)
 
     scanner := bufio.NewScanner(strings.NewReader(text))
@@ -103,7 +108,7 @@ func NewSegmentsFromValue(text string) []model.TranslationValueSegment {
             accumulatedString = ""
 
             specifierText := scanUntilEndOfFormatSpecifier(scanner)
-            ret = append(ret, NewFormatSpecifierSegmentFromSpecifierText(specifierText))
+            ret = append(ret, p.newFormatSpecifierSegmentFromSpecifierText(specifierText))
             continue
         }
         accumulatedString += c
@@ -116,22 +121,21 @@ func NewSegmentsFromValue(text string) []model.TranslationValueSegment {
     return ret
 }
 
-func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
+func (p translationParser) parseTranslationSet(inputPath string) model.TranslationSet {
     f, err := os.Open(inputPath)
     if err != nil {
         panic(err)
     }
-    scanner := bufio.NewScanner(f)
+    lineScanner := bufio.NewScanner(f)
 
     set := model.NewTranslationSet()
     var currentSection *model.TranslationSection
     var currentTranslation *model.Translation
 
-    lineNumber := 0
-    for scanner.Scan() {
-        lineNumber++
+    for lineScanner.Scan() {
+        p.lineNumber++
 
-        rawLine := scanner.Text()
+        rawLine := lineScanner.Text()
         trimmedLine := strings.TrimSpace(rawLine)
 
         if len(trimmedLine) == 0 || strings.HasPrefix(trimmedLine, "#") {
@@ -147,27 +151,32 @@ func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
             currentTranslation = currentSection.AddTranslation(trimmedLine)
         } else {
             if currentTranslation == nil {
-                ReportParserError(lineNumber, "Loose line not in a translation block: " + rawLine)
+                p.reportError("Loose line not in a translation block: " + rawLine)
             } else {
                 separatorIndex := strings.Index(trimmedLine, "=")
                 if separatorIndex == -1 {
-                    ReportParserError(lineNumber, "Cannot find separator '=' on line: " + rawLine)
+                    p.reportError("Cannot find separator '=' on line: " + rawLine)
                 } else {
-                    language := strings.TrimSpace(trimmedLine[0:separatorIndex])
+                    key := strings.TrimSpace(trimmedLine[0:separatorIndex])
                     value := strings.TrimSpace(trimmedLine[separatorIndex+1:])
                     if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
                         value = value[1:len(value)-1]
                     }
-                    currentTranslation.AddValue(language, NewSegmentsFromValue(value))
-                    set.Languages[language] = true
+                    currentTranslation.AddValue(key, p.newSegmentsFromValue(value))
+                    set.Languages[key] = true
                 }
             }
         }
     }
 
-    if err := scanner.Err(); err != nil {
-        fmt.Fprintln(os.Stderr, "reading file:", err)
+    if err := lineScanner.Err(); err != nil {
+        fmt.Fprintln(os.Stderr, "ERROR: Parser error while reading file:", err)
     }
 
     return set
+}
+
+func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
+    parser := translationParser{}
+    return parser.parseTranslationSet(inputPath)
 }

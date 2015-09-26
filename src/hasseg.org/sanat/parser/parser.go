@@ -30,7 +30,7 @@ func (p *translationParser) intFromString(s string) int {
     }
 }
 
-func (p *translationParser) newFormatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
+func (p *translationParser) formatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
     s := strings.TrimRight(strings.TrimLeft(text, "{"), "}")
 
     // Read (potential) semantic order index
@@ -79,7 +79,7 @@ func (p *translationParser) newFormatSpecifierSegmentFromSpecifierText(text stri
     return model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex)
 }
 
-func componentsInCommaSeparatedList(text string) []string {
+func componentsFromCommaSeparatedList(text string) []string {
     ret := make([]string, 0)
     for _,s := range strings.Split(text, ",") {
         ret = append(ret, strings.TrimSpace(s))
@@ -89,7 +89,7 @@ func componentsInCommaSeparatedList(text string) []string {
 
 func (p *translationParser) platformsFromCommaSeparatedString(text string) []model.TranslationPlatform {
     ret := make([]model.TranslationPlatform, 0)
-    for _,s := range componentsInCommaSeparatedList(text) {
+    for _,s := range componentsFromCommaSeparatedList(text) {
         platform := model.PlatformNone
         switch strings.ToLower(s) {
             case "apple": platform = model.PlatformApple
@@ -105,7 +105,7 @@ func (p *translationParser) platformsFromCommaSeparatedString(text string) []mod
     return ret
 }
 
-func (p *translationParser) newSegmentsFromValue(text string) []model.TranslationValueSegment {
+func (p *translationParser) segmentsFromTranslationValueString(text string) []model.TranslationValueSegment {
     ret := make([]model.TranslationValueSegment, 0)
 
     scanner := bufio.NewScanner(strings.NewReader(text))
@@ -136,7 +136,7 @@ func (p *translationParser) newSegmentsFromValue(text string) []model.Translatio
             accumulatedString = ""
 
             specifierText := scanUntilEndOfFormatSpecifier(scanner)
-            ret = append(ret, p.newFormatSpecifierSegmentFromSpecifierText(specifierText))
+            ret = append(ret, p.formatSpecifierSegmentFromSpecifierText(specifierText))
             continue
         }
         accumulatedString += c
@@ -193,7 +193,7 @@ func (p *translationParser) parseTranslationSet(inputPath string) model.Translat
                     if strings.ToLower(key) == "platforms" {
                         currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
                     } else {
-                        currentTranslation.AddValue(key, p.newSegmentsFromValue(value))
+                        currentTranslation.AddValue(key, p.segmentsFromTranslationValueString(value))
                         set.Languages[key] = true
                     }
                 }

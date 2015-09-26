@@ -8,7 +8,7 @@ import (
 
 func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
     p := translationParser{}
-    val := p.newFormatSpecifierSegmentFromSpecifierText
+    val := p.formatSpecifierSegmentFromSpecifierText
     seg := model.NewFormatSpecifierSegment
 
     ass := func(f string, s model.TranslationValueSegment) {
@@ -36,7 +36,7 @@ func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
     ass("{1:f.2}", seg(model.DataTypeFloat, 2, 1))
 }
 
-func TestNewSegmentsFromValue(t *testing.T) {
+func TestsegmentsFromTranslationValueString(t *testing.T) {
     p := translationParser{}
 
     assertCount := func(segments []model.TranslationValueSegment, expectedCount int) {
@@ -50,16 +50,16 @@ func TestNewSegmentsFromValue(t *testing.T) {
     }
 
     {
-        segments := p.newSegmentsFromValue("")
+        segments := p.segmentsFromTranslationValueString("")
         assertCount(segments, 0)
     }
     {
-        segments := p.newSegmentsFromValue(" ")
+        segments := p.segmentsFromTranslationValueString(" ")
         assertCount(segments, 1)
         assertTextSegment(segments, 0, " ")
     }
     {
-        segments := p.newSegmentsFromValue("Eka{d}toka{@}")
+        segments := p.segmentsFromTranslationValueString("Eka{d}toka{@}")
         assertCount(segments, 4)
         assertTextSegment(segments, 0, "Eka")
         assertSpecSegment(segments, 1, model.DataTypeInteger)
@@ -67,7 +67,7 @@ func TestNewSegmentsFromValue(t *testing.T) {
         assertSpecSegment(segments, 3, model.DataTypeObject)
     }
     {
-        segments := p.newSegmentsFromValue("Eka\\{d}toka{@}")
+        segments := p.segmentsFromTranslationValueString("Eka\\{d}toka{@}")
         assertCount(segments, 2)
         assertTextSegment(segments, 0, "Eka{d}toka")
         assertSpecSegment(segments, 1, model.DataTypeObject)

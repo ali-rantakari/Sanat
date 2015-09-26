@@ -18,7 +18,10 @@ func main() {
     outputFormat := args["<output_format>"].(string)
     _ = outputDirPath
 
-    translationSet := parser.NewTranslationSetFromFile(inputFilePath)
+    translationSet, err := parser.NewTranslationSetFromFile(inputFilePath)
+    if err != nil {
+        os.Exit(1)
+    }
 
     writerMap := make(map[string]func(model.TranslationSet,string))
     writerMap["apple"] = output.WriteAppleStringsFiles

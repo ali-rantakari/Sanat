@@ -3,6 +3,7 @@ package parser
 import (
     "os"
     "bufio"
+    "errors"
     "fmt"
     "strings"
     "strconv"
@@ -11,9 +12,11 @@ import (
 
 type translationParser struct {
     lineNumber int
+    numErrors int
 }
 
 func (p *translationParser) reportError(message string) {
+    p.numErrors++
     fmt.Fprintln(os.Stderr, "ERROR on line", p.lineNumber, message)
 }
 
@@ -205,7 +208,12 @@ func (p *translationParser) parseTranslationSet(inputPath string) model.Translat
     return set
 }
 
-func NewTranslationSetFromFile(inputPath string) model.TranslationSet {
+func NewTranslationSetFromFile(inputPath string) (model.TranslationSet, error) {
     parser := translationParser{}
-    return parser.parseTranslationSet(inputPath)
+    ret := parser.parseTranslationSet(inputPath)
+    if parser.numErrors == 0 {
+        return ret, nil
+    } else {
+        return ret, errors.New("Errors while parsing")
+    }
 }

@@ -2,4 +2,4 @@
 #
 # Runs all tests
 
-go test hasseg.org/...
+go test hasseg.org/... -cover

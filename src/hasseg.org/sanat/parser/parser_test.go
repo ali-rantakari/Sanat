@@ -73,3 +73,32 @@ func TestNewSegmentsFromValue(t *testing.T) {
         assertSpecSegment(segments, 1, model.DataTypeObject)
     }
 }
+
+func TestPlatformsFromCommaSeparatedString(t *testing.T) {
+    p := translationParser{}
+
+    ass := func(expectedPlatforms []model.TranslationPlatform, input string) {
+        assert.Equal(t, expectedPlatforms, p.platformsFromCommaSeparatedString(input), input)
+    }
+
+    // Case insensitive; Trimming
+    ass([]model.TranslationPlatform{model.PlatformApple}, "apple")
+    ass([]model.TranslationPlatform{model.PlatformApple}, "Apple")
+    ass([]model.TranslationPlatform{model.PlatformApple}, "APPLE")
+    ass([]model.TranslationPlatform{model.PlatformApple}, " apple ")
+
+    // Multiple
+    ass([]model.TranslationPlatform{model.PlatformAndroid, model.PlatformWindows},
+        "android, windows")
+    ass([]model.TranslationPlatform{model.PlatformAndroid, model.PlatformWindows},
+        "android,windows")
+    ass([]model.TranslationPlatform{model.PlatformApple, model.PlatformAndroid, model.PlatformWindows},
+        "apple, android, windows")
+
+    // Corner cases
+    ass([]model.TranslationPlatform{}, "")
+    ass([]model.TranslationPlatform{}, "asdasdsadda")
+    ass([]model.TranslationPlatform{model.PlatformApple}, "apple,")
+    ass([]model.TranslationPlatform{model.PlatformApple}, ",apple")
+    ass([]model.TranslationPlatform{model.PlatformApple}, ",apple,,")
+}

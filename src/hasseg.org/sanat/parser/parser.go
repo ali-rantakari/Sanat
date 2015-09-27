@@ -219,7 +219,7 @@ func (p *translationParser) parseTranslationSet(inputPath string) model.Translat
 	return set
 }
 
-func NewTranslationSetFromFile(inputPath string, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
+func TranslationSetFromFile(inputPath string, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
 	parser := translationParser{errorHandler: errorHandler}
 	ret := parser.parseTranslationSet(inputPath)
 	if parser.numErrors == 0 {

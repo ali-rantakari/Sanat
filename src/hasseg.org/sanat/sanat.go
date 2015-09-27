@@ -25,7 +25,7 @@ func main() {
 
 	// Parse translation file
 	//
-	translationSet, err := parser.NewTranslationSetFromFile(inputFilePath, parserErrorHandler)
+	translationSet, err := parser.TranslationSetFromFile(inputFilePath, parserErrorHandler)
 	if err != nil {
 		os.Exit(1)
 	}

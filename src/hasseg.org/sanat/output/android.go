@@ -54,7 +54,7 @@ func androidStringFromSegments(segments []model.TranslationValueSegment) string 
 	return ret
 }
 
-func getAndroidStringsFileContents(set model.TranslationSet, language string) string {
+func GetAndroidStringsFileContents(set model.TranslationSet, language string) string {
 	ret := "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n"
 	for _, section := range set.Sections {
 		if 0 < len(section.Name) {
@@ -88,7 +88,7 @@ func WriteAndroidStringsFiles(set model.TranslationSet, outDirPath string) {
 			panic(err)
 		}
 
-		_, err = f.WriteString(getAndroidStringsFileContents(set, language))
+		_, err = f.WriteString(GetAndroidStringsFileContents(set, language))
 		if err != nil {
 			panic(err)
 		}

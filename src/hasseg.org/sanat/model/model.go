@@ -97,3 +97,15 @@ func NewFormatSpecifierSegment(dataType TranslationFormatDataType,
 		NumberOfDecimals:   numDecimals,
 	}
 }
+
+type TranslationValueHandler func(*TranslationValue)
+
+func (set *TranslationSet) IterateTranslationValues(handler TranslationValueHandler) {
+	for s := 0; s < len(set.Sections); s++ {
+		for t := 0; t < len(set.Sections[s].Translations); t++ {
+			for v := 0; v < len(set.Sections[s].Translations[t].Values); v++ {
+				handler(&set.Sections[s].Translations[t].Values[v])
+			}
+		}
+	}
+}

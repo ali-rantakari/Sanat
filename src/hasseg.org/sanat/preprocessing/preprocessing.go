@@ -7,7 +7,9 @@ import (
 
 type PreProcessorFunction func(*model.TranslationSet) error
 
-var PreProcessorFunctionsByName = map[string]PreProcessorFunction{}
+var PreProcessorFunctionsByName = map[string]PreProcessorFunction{
+	"markdown": PreprocessMarkdown,
+}
 
 func PreProcessorFunctionForName(name string) (PreProcessorFunction, error) {
 	ret := PreProcessorFunctionsByName[name]

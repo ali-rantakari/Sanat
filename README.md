@@ -93,6 +93,10 @@ Preprocessors
 
 Translations can be preprocessed by specifying one of the following preprocessors:
 
+### `markdown`
+
+Translates the text in each translation from Markdown to HTML.
+
 
 
 

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/util"
 	"os"
 	"strconv"
 	"strings"
@@ -87,17 +88,9 @@ func (p *translationParser) formatSpecifierSegmentFromSpecifierText(text string)
 	return model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex)
 }
 
-func componentsFromCommaSeparatedList(text string) []string {
-	ret := make([]string, 0)
-	for _, s := range strings.Split(text, ",") {
-		ret = append(ret, strings.TrimSpace(s))
-	}
-	return ret
-}
-
 func (p *translationParser) platformsFromCommaSeparatedString(text string) []model.TranslationPlatform {
 	ret := make([]model.TranslationPlatform, 0)
-	for _, s := range componentsFromCommaSeparatedList(text) {
+	for _, s := range util.ComponentsFromCommaSeparatedList(text) {
 		platform := model.PlatformNone
 		switch strings.ToLower(s) {
 		case "apple":

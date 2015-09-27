@@ -13,6 +13,8 @@ func parserErrorHandler(lineNumber int, message string) {
 }
 
 func main() {
+	// Arguments
+	//
 	usage := "Usage: Sanat <input_file> <output_format> <output_dir>"
 	args, _ := docopt.Parse(usage, nil, true, "Sanat", false)
 
@@ -21,11 +23,15 @@ func main() {
 	outputFormat := args["<output_format>"].(string)
 	_ = outputDirPath
 
+	// Parse translation file
+	//
 	translationSet, err := parser.NewTranslationSetFromFile(inputFilePath, parserErrorHandler)
 	if err != nil {
 		os.Exit(1)
 	}
 
+	// Write output
+	//
 	outputFunction, err := output.OutputFunctionForName(outputFormat)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())

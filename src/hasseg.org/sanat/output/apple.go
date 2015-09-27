@@ -9,12 +9,6 @@ import (
 	"strings"
 )
 
-func panicIfError(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func AppleFormatSpecifierStringForFormatSpecifier(segment model.TranslationValueSegment) string {
 	ret := "%"
 	if 0 < segment.SemanticOrderIndex {
@@ -83,9 +77,13 @@ func WriteAppleStringsFiles(set model.TranslationSet, outDirPath string) {
 		os.MkdirAll(lprojPath, 0777)
 
 		f, err := os.Create(path.Join(lprojPath, "Localizable.strings"))
-		panicIfError(err)
+		if err != nil {
+			panic(err)
+		}
 
 		_, err = f.WriteString(getAppleStringsFileContents(set, language))
-		panicIfError(err)
+		if err != nil {
+			panic(err)
+		}
 	}
 }

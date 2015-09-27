@@ -88,3 +88,12 @@ The __decimal count__ specifies the number of decimals to show for floating-poin
 The __order index__ specifies the 1-based index of the “printf argument” to apply for this format specifier. (This is necessary for cases where the word order for the same sentence differs between languages.)
 
 
+Preprocessors
+-------------
+
+Translations can be preprocessed by specifying one of the following preprocessors:
+
+
+
+
+

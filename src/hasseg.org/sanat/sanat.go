@@ -9,6 +9,10 @@ import (
     "hasseg.org/sanat/model"
 )
 
+func parserErrorHandler(lineNumber int, message string) {
+    fmt.Fprintln(os.Stderr, "ERROR on line", lineNumber, message)
+}
+
 func main() {
     usage := "Usage: Sanat <input_file> <output_format> <output_dir>"
     args, _ := docopt.Parse(usage, nil, true, "Sanat", false)
@@ -18,7 +22,7 @@ func main() {
     outputFormat := args["<output_format>"].(string)
     _ = outputDirPath
 
-    translationSet, err := parser.NewTranslationSetFromFile(inputFilePath)
+    translationSet, err := parser.NewTranslationSetFromFile(inputFilePath, parserErrorHandler)
     if err != nil {
         os.Exit(1)
     }

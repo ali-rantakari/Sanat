@@ -4,20 +4,24 @@ import (
     "os"
     "bufio"
     "errors"
-    "fmt"
     "strings"
     "strconv"
     "hasseg.org/sanat/model"
 )
 
+type ParserErrorHandler func(lineNumber int, message string)
+
 type translationParser struct {
     lineNumber int
     numErrors int
+    errorHandler ParserErrorHandler
 }
 
 func (p *translationParser) reportError(message string) {
     p.numErrors++
-    fmt.Fprintln(os.Stderr, "ERROR on line", p.lineNumber, message)
+    if p.errorHandler != nil {
+        p.errorHandler(p.lineNumber, message)
+    }
 }
 
 func (p *translationParser) intFromString(s string) int {
@@ -202,14 +206,14 @@ func (p *translationParser) parseTranslationSet(inputPath string) model.Translat
     }
 
     if err := lineScanner.Err(); err != nil {
-        fmt.Fprintln(os.Stderr, "ERROR: Parser error while reading file:", err)
+        p.reportError("Error while reading file: " + err.Error())
     }
 
     return set
 }
 
-func NewTranslationSetFromFile(inputPath string) (model.TranslationSet, error) {
-    parser := translationParser{}
+func NewTranslationSetFromFile(inputPath string, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
+    parser := translationParser{errorHandler: errorHandler}
     ret := parser.parseTranslationSet(inputPath)
     if parser.numErrors == 0 {
         return ret, nil

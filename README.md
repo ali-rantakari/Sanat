@@ -58,6 +58,7 @@ Translations that specify platforms will only be rendered in the translation out
 The currently supported values are:
 
 - `apple` (Apple platforms; iOS and OS X)
+- `android`
 
 
 ### Format specifiers

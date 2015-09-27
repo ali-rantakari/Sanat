@@ -29,6 +29,7 @@ func main() {
 
 	writerMap := make(map[string]func(model.TranslationSet, string))
 	writerMap["apple"] = output.WriteAppleStringsFiles
+	writerMap["android"] = output.WriteAndroidStringsFiles
 	writerMap["dump"] = output.DumpTranslationSet
 
 	outputFunction := writerMap[outputFormat]

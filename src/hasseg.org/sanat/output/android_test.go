@@ -1,9 +1,12 @@
 package output_test
 
 import (
+	"bytes"
+	"encoding/xml"
 	"github.com/stretchr/testify/assert"
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/output"
+	"io"
 	"testing"
 )
 
@@ -50,4 +53,33 @@ func TestTextSanitizedForAndroidString(t *testing.T) {
 
 	// XML-escaping
 	ass("&lt;Foo&gt;", "<Foo>")
+}
+
+func xmlIsValid(xmlString string) bool {
+	decoder := xml.NewDecoder(bytes.NewBufferString(xmlString))
+	for {
+		_, err := decoder.Token()
+		if err == nil {
+			continue
+		} else if err == io.EOF {
+			break
+		}
+		return false
+	}
+	return true
+}
+
+func makeTranslationSet(sectionName string, keyName string, language string, value string) model.TranslationSet {
+	ts := model.NewTranslationSet()
+	ts.AddSection(sectionName).AddTranslation(keyName).AddValue(language, []model.TranslationValueSegment{model.NewTextSegment(value)})
+	return ts
+}
+
+func TestOverallXMLFileGeneration(t *testing.T) {
+	{
+		lang := "en"
+		ts := makeTranslationSet("Sektion", "Foo", lang, "Some text")
+		x := output.GetAndroidStringsFileContents(ts, lang)
+		assert.True(t, xmlIsValid(x), "")
+	}
 }

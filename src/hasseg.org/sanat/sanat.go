@@ -30,7 +30,12 @@ Options:
 	inputFilePath := args["<input_file>"].(string)
 	outputDirPath := args["<output_dir>"].(string)
 	outputFormat := args["<output_format>"].(string)
-	preprocessorNames := util.ComponentsFromCommaSeparatedList(args["--processors"].(string))
+
+	preprocessorsArg := args["--processors"]
+	var preprocessorNames []string
+	if preprocessorsArg != nil {
+		preprocessorNames = util.ComponentsFromCommaSeparatedList(preprocessorsArg.(string))
+	}
 
 	// Parse translation file
 	//

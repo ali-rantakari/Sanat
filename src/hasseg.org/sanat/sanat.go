@@ -31,7 +31,6 @@ Options:
 	outputDirPath := args["<output_dir>"].(string)
 	outputFormat := args["<output_format>"].(string)
 	preprocessorNames := util.ComponentsFromCommaSeparatedList(args["--processors"].(string))
-	_ = outputDirPath
 
 	// Parse translation file
 	//

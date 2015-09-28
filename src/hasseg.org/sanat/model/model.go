@@ -1,8 +1,6 @@
 package model
 
-import (
-	_ "fmt"
-)
+import ()
 
 type TranslationFormatDataType int
 

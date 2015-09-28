@@ -99,5 +99,12 @@ Translates the text in each translation from Markdown to HTML.
 
 
 
+License
+-------
+
+Please see the `LICENSE` file.
+
+
+
 
 

@@ -12,7 +12,7 @@ import (
 	"hasseg.org/sanat/model"
 )
 
-func FormatSpecifierStringForFormatSpecifier(segment model.TranslationValueFormatSpecifierSegment) string {
+func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegment) string {
 	ret := "%"
 	if 0 < segment.SemanticOrderIndex {
 		ret += strconv.Itoa(segment.SemanticOrderIndex) + "$"
@@ -43,14 +43,14 @@ func SanitizedForString(text string) string {
 	return xmlEscaped(strings.Replace(text, "%", "%%", -1))
 }
 
-func stringFromSegments(segments []model.TranslationValueSegment) string {
+func stringFromSegments(segments []model.Segment) string {
 	ret := ""
 	for _, segment := range segments {
 		switch segment.(type) {
-		case model.TranslationValueTextSegment:
-			ret += SanitizedForString(segment.(model.TranslationValueTextSegment).Text)
-		case model.TranslationValueFormatSpecifierSegment:
-			ret += FormatSpecifierStringForFormatSpecifier(segment.(model.TranslationValueFormatSpecifierSegment))
+		case model.TextSegment:
+			ret += SanitizedForString(segment.(model.TextSegment).Text)
+		case model.FormatSpecifierSegment:
+			ret += FormatSpecifierStringForFormatSpecifier(segment.(model.FormatSpecifierSegment))
 		}
 	}
 	return ret

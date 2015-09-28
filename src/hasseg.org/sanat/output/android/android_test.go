@@ -73,7 +73,7 @@ func xmlIsValid(xmlString string) bool {
 
 func makeTranslationSet(sectionName string, keyName string, language string, value string) model.TranslationSet {
 	ts := model.NewTranslationSet()
-	ts.AddSection(sectionName).AddTranslation(keyName).AddValue(language, []model.TranslationValueSegment{model.NewTextSegment(value)})
+	ts.AddSection(sectionName).AddTranslation(keyName).AddValue(language, []model.Segment{model.NewTextSegment(value)})
 	return ts
 }
 

@@ -13,7 +13,7 @@ func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
 	val := p.formatSpecifierSegmentFromSpecifierText
 	seg := model.NewFormatSpecifierSegment
 
-	ass := func(f string, s model.TranslationValueSegment) {
+	ass := func(f string, s model.Segment) {
 		assert.Equal(t, s, val(f), f)
 	}
 
@@ -41,14 +41,14 @@ func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
 func TestsegmentsFromTranslationValueString(t *testing.T) {
 	p := translationParser{}
 
-	assertCount := func(segments []model.TranslationValueSegment, expectedCount int) {
+	assertCount := func(segments []model.Segment, expectedCount int) {
 		assert.Equal(t, expectedCount, len(segments), "Expected count")
 	}
-	assertTextSegment := func(segments []model.TranslationValueSegment, index int, expectedValue string) {
+	assertTextSegment := func(segments []model.Segment, index int, expectedValue string) {
 		assert.Equal(t, model.NewTextSegment(expectedValue), segments[index], "Expected item at index")
 	}
-	assertSpecSegment := func(segments []model.TranslationValueSegment, index int, expectedDataType model.TranslationFormatDataType) {
-		assert.Equal(t, expectedDataType, segments[index].(model.TranslationValueFormatSpecifierSegment).DataType, "Expected item at index")
+	assertSpecSegment := func(segments []model.Segment, index int, expectedDataType model.TranslationFormatDataType) {
+		assert.Equal(t, expectedDataType, segments[index].(model.FormatSpecifierSegment).DataType, "Expected item at index")
 	}
 
 	{

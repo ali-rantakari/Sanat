@@ -21,21 +21,21 @@ const (
 	PlatformWindows
 )
 
-type TranslationValueTextSegment struct {
+type TextSegment struct {
 	Text string
 }
 
-type TranslationValueFormatSpecifierSegment struct {
+type FormatSpecifierSegment struct {
 	SemanticOrderIndex int
 	DataType           TranslationFormatDataType
 	NumberOfDecimals   int
 }
 
-type TranslationValueSegment interface{}
+type Segment interface{}
 
 type TranslationValue struct {
 	Language string
-	Segments []TranslationValueSegment
+	Segments []Segment
 }
 
 type Translation struct {
@@ -68,7 +68,7 @@ func (section *TranslationSection) AddTranslation(key string) *Translation {
 	return &section.Translations[len(section.Translations)-1]
 }
 
-func (translation *Translation) AddValue(language string, segments []TranslationValueSegment) *TranslationValue {
+func (translation *Translation) AddValue(language string, segments []Segment) *TranslationValue {
 	translation.Values = append(translation.Values, TranslationValue{Language: language, Segments: segments})
 	return &translation.Values[len(translation.Values)-1]
 }
@@ -85,14 +85,14 @@ func (translation Translation) IsForPlatform(givenPlatform TranslationPlatform) 
 	return false
 }
 
-func NewTextSegment(text string) TranslationValueTextSegment {
-	return TranslationValueTextSegment{Text: text}
+func NewTextSegment(text string) TextSegment {
+	return TextSegment{Text: text}
 }
 
 func NewFormatSpecifierSegment(dataType TranslationFormatDataType,
 	numDecimals int,
-	semanticOrderIndex int) TranslationValueFormatSpecifierSegment {
-	return TranslationValueFormatSpecifierSegment{
+	semanticOrderIndex int) FormatSpecifierSegment {
+	return FormatSpecifierSegment{
 		SemanticOrderIndex: semanticOrderIndex,
 		DataType:           dataType,
 		NumberOfDecimals:   numDecimals,

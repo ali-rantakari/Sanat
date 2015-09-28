@@ -37,7 +37,7 @@ func (p *translationParser) intFromString(s string) int {
 	}
 }
 
-func (p *translationParser) formatSpecifierSegmentFromSpecifierText(text string) model.TranslationValueSegment {
+func (p *translationParser) formatSpecifierSegmentFromSpecifierText(text string) model.Segment {
 	s := strings.TrimRight(strings.TrimLeft(text, "{"), "}")
 
 	// Read (potential) semantic order index
@@ -111,8 +111,8 @@ func (p *translationParser) platformsFromCommaSeparatedString(text string) []mod
 	return ret
 }
 
-func (p *translationParser) segmentsFromTranslationValueString(text string) []model.TranslationValueSegment {
-	ret := make([]model.TranslationValueSegment, 0)
+func (p *translationParser) segmentsFromTranslationValueString(text string) []model.Segment {
+	ret := make([]model.Segment, 0)
 
 	scanner := bufio.NewScanner(strings.NewReader(text))
 	scanner.Split(bufio.ScanRunes)

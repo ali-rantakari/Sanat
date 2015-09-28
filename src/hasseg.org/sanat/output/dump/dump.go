@@ -7,7 +7,7 @@ import (
 	"hasseg.org/sanat/model"
 )
 
-func StringForFormatSpecifier(segment model.TranslationValueFormatSpecifierSegment) string {
+func StringForFormatSpecifier(segment model.FormatSpecifierSegment) string {
 	ret := ""
 	switch segment.DataType {
 	case model.DataTypeString:
@@ -57,10 +57,10 @@ func DumpTranslationSet(set model.TranslationSet, outputDirPath string) {
 				fmt.Println("    Language: " + value.Language)
 				for _, segment := range value.Segments {
 					switch segment.(type) {
-					case model.TranslationValueTextSegment:
-						fmt.Println("      Text: '" + segment.(model.TranslationValueTextSegment).Text + "'")
-					case model.TranslationValueFormatSpecifierSegment:
-						fmt.Println("       fmt: " + StringForFormatSpecifier(segment.(model.TranslationValueFormatSpecifierSegment)))
+					case model.TextSegment:
+						fmt.Println("      Text: '" + segment.(model.TextSegment).Text + "'")
+					case model.FormatSpecifierSegment:
+						fmt.Println("       fmt: " + StringForFormatSpecifier(segment.(model.FormatSpecifierSegment)))
 					}
 				}
 			}

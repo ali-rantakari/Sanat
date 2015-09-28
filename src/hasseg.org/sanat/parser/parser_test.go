@@ -48,7 +48,7 @@ func TestsegmentsFromTranslationValueString(t *testing.T) {
 		assert.Equal(t, model.NewTextSegment(expectedValue), segments[index], "Expected item at index")
 	}
 	assertSpecSegment := func(segments []model.TranslationValueSegment, index int, expectedDataType model.TranslationFormatDataType) {
-		assert.Equal(t, expectedDataType, segments[index].DataType, "Expected item at index")
+		assert.Equal(t, expectedDataType, segments[index].(model.TranslationValueFormatSpecifierSegment).DataType, "Expected item at index")
 	}
 
 	{

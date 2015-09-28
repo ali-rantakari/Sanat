@@ -21,13 +21,17 @@ const (
 	PlatformWindows
 )
 
-type TranslationValueSegment struct {
-	Text               string
-	IsFormatSpecifier  bool
+type TranslationValueTextSegment struct {
+	Text string
+}
+
+type TranslationValueFormatSpecifierSegment struct {
 	SemanticOrderIndex int
 	DataType           TranslationFormatDataType
 	NumberOfDecimals   int
 }
+
+type TranslationValueSegment interface{}
 
 type TranslationValue struct {
 	Language string
@@ -81,15 +85,14 @@ func (translation Translation) IsForPlatform(givenPlatform TranslationPlatform) 
 	return false
 }
 
-func NewTextSegment(text string) TranslationValueSegment {
-	return TranslationValueSegment{Text: text}
+func NewTextSegment(text string) TranslationValueTextSegment {
+	return TranslationValueTextSegment{Text: text}
 }
 
 func NewFormatSpecifierSegment(dataType TranslationFormatDataType,
 	numDecimals int,
-	semanticOrderIndex int) TranslationValueSegment {
-	return TranslationValueSegment{
-		IsFormatSpecifier:  true,
+	semanticOrderIndex int) TranslationValueFormatSpecifierSegment {
+	return TranslationValueFormatSpecifierSegment{
 		SemanticOrderIndex: semanticOrderIndex,
 		DataType:           dataType,
 		NumberOfDecimals:   numDecimals,

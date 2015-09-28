@@ -1,10 +1,12 @@
 package output_test
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
+
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/output"
-	"testing"
 )
 
 func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {

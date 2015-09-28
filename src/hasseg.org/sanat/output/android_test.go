@@ -3,11 +3,13 @@ package output_test
 import (
 	"bytes"
 	"encoding/xml"
-	"github.com/stretchr/testify/assert"
-	"hasseg.org/sanat/model"
-	"hasseg.org/sanat/output"
 	"io"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/output"
 )
 
 func TestAndroidFormatSpecifierStringForFormatSpecifier(t *testing.T) {

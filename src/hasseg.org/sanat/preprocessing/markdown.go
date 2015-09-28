@@ -1,10 +1,12 @@
 package preprocessing
 
 import (
+	"strings"
+
 	"github.com/russross/blackfriday"
 	"hasseg.org/sanat/model"
+
 	"hasseg.org/sanat/util"
-	"strings"
 )
 
 func htmlFromMarkdown(md string) string {

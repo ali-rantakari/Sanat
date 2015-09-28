@@ -1,9 +1,11 @@
 package util_test
 
 import (
-	"github.com/stretchr/testify/assert"
-	"hasseg.org/sanat/util"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"hasseg.org/sanat/util"
 )
 
 func TestComponentsFromCommaSeparatedList(t *testing.T) {

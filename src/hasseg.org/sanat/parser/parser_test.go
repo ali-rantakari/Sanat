@@ -1,9 +1,11 @@
 package parser
 
 import (
-	"github.com/stretchr/testify/assert"
-	"hasseg.org/sanat/model"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"hasseg.org/sanat/model"
 )
 
 func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {

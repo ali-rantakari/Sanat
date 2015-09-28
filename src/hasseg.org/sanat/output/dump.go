@@ -2,8 +2,9 @@ package output
 
 import (
 	"fmt"
-	"hasseg.org/sanat/model"
 	"strconv"
+
+	"hasseg.org/sanat/model"
 )
 
 func StringForFormatSpecifier(segment model.TranslationValueSegment) string {

@@ -2,6 +2,7 @@ package preprocessing
 
 import (
 	"errors"
+
 	"hasseg.org/sanat/model"
 )
 

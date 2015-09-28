@@ -2,6 +2,7 @@ package output
 
 import (
 	"errors"
+
 	"hasseg.org/sanat/model"
 )
 

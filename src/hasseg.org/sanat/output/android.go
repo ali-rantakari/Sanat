@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"hasseg.org/sanat/model"
 	"os"
 	"path"
 	"strconv"
 	"strings"
+
+	"hasseg.org/sanat/model"
 )
 
 func AndroidFormatSpecifierStringForFormatSpecifier(segment model.TranslationValueSegment) string {

@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/docopt/docopt-go"
+
 	"hasseg.org/sanat/output"
 	"hasseg.org/sanat/parser"
 	"hasseg.org/sanat/preprocessing"
 	"hasseg.org/sanat/util"
-	"os"
 )
 
 func parserErrorHandler(lineNumber int, message string) {

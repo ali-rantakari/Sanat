@@ -3,11 +3,12 @@ package parser
 import (
 	"bufio"
 	"errors"
-	"hasseg.org/sanat/model"
-	"hasseg.org/sanat/util"
 	"os"
 	"strconv"
 	"strings"
+
+	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/util"
 )
 
 type ParserErrorHandler func(lineNumber int, message string)

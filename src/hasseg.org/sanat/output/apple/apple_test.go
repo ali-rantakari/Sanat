@@ -1,4 +1,4 @@
-package output_test
+package apple_test
 
 import (
 	"testing"
@@ -6,14 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"hasseg.org/sanat/model"
-	"hasseg.org/sanat/output"
+	"hasseg.org/sanat/output/apple"
 )
 
 func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 	val := func(dataType model.TranslationFormatDataType,
 		numDecimals int,
 		semanticOrderIndex int) string {
-		return output.AppleFormatSpecifierStringForFormatSpecifier(model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex))
+		return apple.FormatSpecifierStringForFormatSpecifier(model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex))
 	}
 
 	// Data types
@@ -39,7 +39,7 @@ func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 
 func TestTextSanitizedForAppleString(t *testing.T) {
 	ass := func(expected string, input string) {
-		assert.Equal(t, expected, output.TextSanitizedForAppleString(input), input)
+		assert.Equal(t, expected, apple.SanitizedForStringValue(input), input)
 	}
 
 	ass("", "")

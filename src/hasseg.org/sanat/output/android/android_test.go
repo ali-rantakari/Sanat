@@ -1,4 +1,4 @@
-package output_test
+package android_test
 
 import (
 	"bytes"
@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"hasseg.org/sanat/model"
-	"hasseg.org/sanat/output"
+	"hasseg.org/sanat/output/android"
 )
 
 func TestAndroidFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 	val := func(dataType model.TranslationFormatDataType,
 		numDecimals int,
 		semanticOrderIndex int) string {
-		return output.AndroidFormatSpecifierStringForFormatSpecifier(model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex))
+		return android.FormatSpecifierStringForFormatSpecifier(model.NewFormatSpecifierSegment(dataType, numDecimals, semanticOrderIndex))
 	}
 
 	// Data types
@@ -42,7 +42,7 @@ func TestAndroidFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 
 func TestTextSanitizedForAndroidString(t *testing.T) {
 	ass := func(expected string, input string) {
-		assert.Equal(t, expected, output.TextSanitizedForAndroidString(input), input)
+		assert.Equal(t, expected, android.SanitizedForString(input), input)
 	}
 
 	ass("", "")
@@ -81,7 +81,7 @@ func TestOverallXMLFileGeneration(t *testing.T) {
 	{
 		lang := "en"
 		ts := makeTranslationSet("Sektion", "Foo", lang, "Some text")
-		x := output.GetAndroidStringsFileContents(ts, lang)
+		x := android.GetStringsFileContents(ts, lang)
 		assert.True(t, xmlIsValid(x), "")
 	}
 }

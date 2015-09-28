@@ -1,4 +1,4 @@
-package output
+package android
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	"hasseg.org/sanat/model"
 )
 
-func AndroidFormatSpecifierStringForFormatSpecifier(segment model.TranslationValueSegment) string {
+func FormatSpecifierStringForFormatSpecifier(segment model.TranslationValueSegment) string {
 	ret := "%"
 	if 0 < segment.SemanticOrderIndex {
 		ret += strconv.Itoa(segment.SemanticOrderIndex) + "$"
@@ -39,23 +39,23 @@ func xmlEscaped(text string) string {
 	return b.String()
 }
 
-func TextSanitizedForAndroidString(text string) string {
+func SanitizedForString(text string) string {
 	return xmlEscaped(strings.Replace(text, "%", "%%", -1))
 }
 
-func androidStringFromSegments(segments []model.TranslationValueSegment) string {
+func stringFromSegments(segments []model.TranslationValueSegment) string {
 	ret := ""
 	for _, segment := range segments {
 		if segment.IsFormatSpecifier {
-			ret += AndroidFormatSpecifierStringForFormatSpecifier(segment)
+			ret += FormatSpecifierStringForFormatSpecifier(segment)
 		} else {
-			ret += TextSanitizedForAndroidString(segment.Text)
+			ret += SanitizedForString(segment.Text)
 		}
 	}
 	return ret
 }
 
-func GetAndroidStringsFileContents(set model.TranslationSet, language string) string {
+func GetStringsFileContents(set model.TranslationSet, language string) string {
 	ret := "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n"
 	for _, section := range set.Sections {
 		if 0 < len(section.Name) {
@@ -70,7 +70,7 @@ func GetAndroidStringsFileContents(set model.TranslationSet, language string) st
 				if value.Language == language {
 					ret += fmt.Sprintf("    <string name=\"%s\">%s</string>\n",
 						xmlEscaped(translation.Key),
-						androidStringFromSegments(value.Segments))
+						stringFromSegments(value.Segments))
 				}
 			}
 		}
@@ -79,7 +79,7 @@ func GetAndroidStringsFileContents(set model.TranslationSet, language string) st
 	return ret
 }
 
-func WriteAndroidStringsFiles(set model.TranslationSet, outDirPath string) {
+func WriteStringsFiles(set model.TranslationSet, outDirPath string) {
 	for language, _ := range set.Languages {
 		valuesDirPath := path.Join(outDirPath, "values-"+language)
 		os.MkdirAll(valuesDirPath, 0777)
@@ -89,7 +89,7 @@ func WriteAndroidStringsFiles(set model.TranslationSet, outDirPath string) {
 			panic(err)
 		}
 
-		_, err = f.WriteString(GetAndroidStringsFileContents(set, language))
+		_, err = f.WriteString(GetStringsFileContents(set, language))
 		if err != nil {
 			panic(err)
 		}

@@ -5,20 +5,20 @@ import ()
 type TranslationFormatDataType int
 
 const (
-	DataTypeNone    TranslationFormatDataType = iota
-	DataTypeObject  TranslationFormatDataType = iota
-	DataTypeInteger TranslationFormatDataType = iota
-	DataTypeString  TranslationFormatDataType = iota
-	DataTypeFloat   TranslationFormatDataType = iota
+	DataTypeNone TranslationFormatDataType = iota
+	DataTypeObject
+	DataTypeInteger
+	DataTypeString
+	DataTypeFloat
 )
 
 type TranslationPlatform int
 
 const (
-	PlatformNone    TranslationPlatform = iota
-	PlatformApple   TranslationPlatform = iota
-	PlatformAndroid TranslationPlatform = iota
-	PlatformWindows TranslationPlatform = iota
+	PlatformNone TranslationPlatform = iota
+	PlatformApple
+	PlatformAndroid
+	PlatformWindows
 )
 
 type TranslationValueSegment struct {

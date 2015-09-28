@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/preprocessing"
 	"hasseg.org/sanat/util"
 )
 
@@ -154,7 +155,7 @@ func (p *translationParser) segmentsFromTranslationValueString(text string) []mo
 	return ret
 }
 
-func (p *translationParser) parseTranslationSet(inputPath string) model.TranslationSet {
+func (p *translationParser) parseTranslationSet(inputPath string, preprocessor preprocessing.PreProcessor) model.TranslationSet {
 	f, err := os.Open(inputPath)
 	if err != nil {
 		panic(err)
@@ -198,6 +199,7 @@ func (p *translationParser) parseTranslationSet(inputPath string) model.Translat
 					if strings.ToLower(key) == "platforms" {
 						currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
 					} else {
+						value = preprocessor.ProcessRawValue(value)
 						currentTranslation.AddValue(key, p.segmentsFromTranslationValueString(value))
 						set.Languages[key] = true
 					}
@@ -213,9 +215,9 @@ func (p *translationParser) parseTranslationSet(inputPath string) model.Translat
 	return set
 }
 
-func TranslationSetFromFile(inputPath string, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
+func TranslationSetFromFile(inputPath string, preprocessor preprocessing.PreProcessor, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
 	parser := translationParser{errorHandler: errorHandler}
-	ret := parser.parseTranslationSet(inputPath)
+	ret := parser.parseTranslationSet(inputPath, preprocessor)
 	if parser.numErrors == 0 {
 		return ret, nil
 	} else {

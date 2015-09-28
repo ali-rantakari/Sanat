@@ -33,33 +33,27 @@ Options:
 	outputDirPath := args["<output_dir>"].(string)
 	outputFormat := args["<output_format>"].(string)
 
+	// (Optionally) get "group" preprocessor for all the preprocessors
+	// we want to run
+	//
 	preprocessorsArg := args["--processors"]
-	var preprocessorNames []string
+	var preProcessor preprocessing.PreProcessor
+	preProcessor = preprocessing.NoOpPreProcessor{}
 	if preprocessorsArg != nil {
-		preprocessorNames = util.ComponentsFromCommaSeparatedList(preprocessorsArg.(string))
+		var err error
+		preprocessorNames := util.ComponentsFromCommaSeparatedList(preprocessorsArg.(string))
+		preProcessor, err = preprocessing.GroupPreProcessorForProcessorNames(preprocessorNames)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+			os.Exit(1)
+		}
 	}
 
 	// Parse translation file
 	//
-	translationSet, err := parser.TranslationSetFromFile(inputFilePath, parserErrorHandler)
+	translationSet, err := parser.TranslationSetFromFile(inputFilePath, preProcessor, parserErrorHandler)
 	if err != nil {
 		os.Exit(1)
-	}
-
-	// (Optionally) process the translations
-	//
-	if 0 < len(preprocessorNames) {
-		for _, preprocessorName := range preprocessorNames {
-			preprocessorFunction, err := preprocessing.PreProcessorFunctionForName(preprocessorName)
-			if err != nil {
-				fmt.Fprintln(os.Stderr, err.Error())
-				os.Exit(1)
-			}
-			if processErr := preprocessorFunction(&translationSet); processErr != nil {
-				fmt.Fprintln(os.Stderr, processErr.Error())
-				os.Exit(1)
-			}
-		}
 	}
 
 	// Write output

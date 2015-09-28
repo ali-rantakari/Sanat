@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/russross/blackfriday"
-	"hasseg.org/sanat/model"
 
 	"hasseg.org/sanat/util"
 )
@@ -53,24 +52,10 @@ func htmlFromMarkdown(md string) string {
 	return ret
 }
 
-func PreprocessMarkdown(set *model.TranslationSet) error {
-	//
-	// TODO: need to compile the translation string as a whole — compiling
-	// each segment in isolation will yield incorrect results.
-	// e.g.:
-	//
-	//   _Eka {0} toka_
-	//
-	// should yield:
-	//
-	//   <em>Eka {0} toka</em>
-	//
-	set.IterateTranslationValues(func(value *model.TranslationValue) {
-		for g := 0; g < len(value.Segments); g++ {
-			if !value.Segments[g].IsFormatSpecifier {
-				value.Segments[g].Text = htmlFromMarkdown(value.Segments[g].Text)
-			}
-		}
-	})
-	return nil
+type MarkdownPreProcessor struct {
+	*NoOpPreProcessor
+}
+
+func (pp MarkdownPreProcessor) ProcessRawValue(v string) string {
+	return htmlFromMarkdown(v)
 }

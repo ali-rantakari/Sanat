@@ -7,6 +7,7 @@ import (
 	"hasseg.org/sanat/output/android"
 	"hasseg.org/sanat/output/apple"
 	"hasseg.org/sanat/output/dump"
+	"hasseg.org/sanat/output/json"
 	"hasseg.org/sanat/output/windows"
 )
 
@@ -16,6 +17,7 @@ var OutputFunctionsByName = map[string]OutputFunction{
 	"apple":   apple.WriteStringsFiles,
 	"android": android.WriteStringsFiles,
 	"windows": windows.WriteStringsFiles,
+	"json":    json.DumpTranslationSet,
 	"dump":    dump.DumpTranslationSet,
 }
 

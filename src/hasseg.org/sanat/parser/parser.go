@@ -203,6 +203,8 @@ func (p *translationParser) parseTranslationSet(inputPath string, preprocessor p
 						currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
 					} else if lowerKey == "tags" {
 						currentTranslation.Tags = util.ComponentsFromCommaSeparatedList(value)
+					} else if lowerKey == "comment" {
+						currentTranslation.Comment = value
 					} else {
 						value = preprocessor.ProcessRawValue(value)
 						segments := preprocessor.ProcessValueSegments(p.segmentsFromTranslationValueString(value))

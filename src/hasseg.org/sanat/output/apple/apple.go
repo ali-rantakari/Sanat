@@ -65,6 +65,9 @@ func getStringsFileContents(set model.TranslationSet, language string) string {
 			if !translation.IsForPlatform(model.PlatformApple) {
 				continue
 			}
+			if 0 < len(translation.Comment) {
+				ret += "/* " + escapedForComment(translation.Comment) + " */\n"
+			}
 			for _, value := range translation.Values {
 				if value.Language == language {
 					ret += fmt.Sprintf("\"%s\" = \"%s\";\n",

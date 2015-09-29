@@ -94,6 +94,10 @@ func DumpTranslationSet(set model.TranslationSet, outputDirPath string) {
 				ret += `, "tags": ` + jsonForStringList(translation.Tags)
 			}
 
+			if 0 < len(translation.Comment) {
+				ret += `, "comment": "` + escapedForJSON(translation.Comment) + `"`
+			}
+
 			ret += `, "values": [`
 			for valueIndex, value := range translation.Values {
 				if 0 < valueIndex {

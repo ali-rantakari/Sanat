@@ -133,6 +133,10 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 						xmlEscaped(translation.Key))
 					ret += fmt.Sprintf("    <value>%s</value>\n",
 						stringFromSegments(value.Segments))
+					if 0 < len(translation.Comment) {
+						ret += fmt.Sprintf("    <comment>%s</comment>\n",
+							xmlEscaped(translation.Comment))
+					}
 					ret += "  </data>\n"
 				}
 			}

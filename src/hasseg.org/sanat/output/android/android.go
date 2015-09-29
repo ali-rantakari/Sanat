@@ -56,6 +56,10 @@ func stringFromSegments(segments []model.Segment) string {
 	return ret
 }
 
+func sanitizedForXMLComment(s string) string {
+	return strings.Replace(s, "--", "- -", -1)
+}
+
 func GetStringsFileContents(set model.TranslationSet, language string) string {
 	ret := "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n"
 	for _, section := range set.Sections {
@@ -69,6 +73,10 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 			}
 			for _, value := range translation.Values {
 				if value.Language == language {
+					if 0 < len(translation.Comment) {
+						ret += fmt.Sprintf("    <!-- %s -->\n",
+							sanitizedForXMLComment(translation.Comment))
+					}
 					ret += fmt.Sprintf("    <string name=\"%s\">%s</string>\n",
 						xmlEscaped(translation.Key),
 						stringFromSegments(value.Segments))

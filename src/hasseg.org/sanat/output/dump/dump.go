@@ -57,6 +57,9 @@ func DumpTranslationSet(set model.TranslationSet, outputDirPath string) {
 			if 0 < len(translation.Tags) {
 				fmt.Println("    Tags: " + strings.Join(translation.Tags, ", "))
 			}
+			if 0 < len(translation.Comment) {
+				fmt.Println("    Comment: '" + translation.Comment + "'")
+			}
 			for _, value := range translation.Values {
 				fmt.Println("    Language: " + value.Language)
 				for _, segment := range value.Segments {

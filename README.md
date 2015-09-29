@@ -61,6 +61,17 @@ The currently supported values are:
 - `android`
 - `windows` (.NET)
 
+#### Comments
+
+Translations can be given comments like so:
+
+      LoginView.Title
+        en = Log in
+        fi = Kirjaudu sisään
+        comment = The title to the login view
+
+These will be included in the generated platform-specific string resource files whenever possible.
+
 
 ### Format specifiers
 

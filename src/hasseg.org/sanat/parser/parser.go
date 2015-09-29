@@ -181,6 +181,11 @@ func (p *translationParser) parseTranslationSet(inputReader io.Reader, preproces
 			if currentSection == nil { // Add implicit default section if needed
 				currentSection = set.AddSection("")
 			}
+			if currentTranslation != nil {
+				if len(currentTranslation.Values) == 0 {
+					p.reportError("Translation '" + currentTranslation.Key + "' has no values")
+				}
+			}
 			currentTranslation = currentSection.AddTranslation(trimmedLine)
 		} else if leadingWhitespaceCount == 4 { // Translation metadata/value row
 			if currentTranslation == nil {

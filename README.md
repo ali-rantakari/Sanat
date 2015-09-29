@@ -10,7 +10,7 @@ Translates a string resource translation file that looks something like this:
 
 …into string resource files appropriate for use on several different software platforms.
 
-Run the main program without any arguments to see “usage” information.
+Run the main program with the `--help` argument to see “usage” information.
 
 
 Translation File Syntax

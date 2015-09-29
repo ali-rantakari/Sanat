@@ -34,12 +34,12 @@ Options:
 	// we want to run
 	//
 	preprocessorsArg := args["--processors"]
-	var preProcessor preprocessing.Preprocessor
-	preProcessor = preprocessing.NewNoOpPreprocessor()
+	var preprocessor preprocessing.Preprocessor
+	preprocessor = preprocessing.NewNoOpPreprocessor()
 	if preprocessorsArg != nil {
 		var err error
 		preprocessorNames := util.ComponentsFromCommaSeparatedList(preprocessorsArg.(string))
-		preProcessor, err = preprocessing.GroupPreprocessorForProcessorNames(preprocessorNames)
+		preprocessor, err = preprocessing.GroupPreprocessorForProcessorNames(preprocessorNames)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)
@@ -50,7 +50,7 @@ Options:
 
 	// Parse translation file
 	//
-	translationSet, err := parser.TranslationSetFromFile(inputFilePath, preProcessor, parserErrorHandler)
+	translationSet, err := parser.TranslationSetFromFile(inputFilePath, preprocessor, parserErrorHandler)
 	if err != nil {
 		os.Exit(1)
 	}

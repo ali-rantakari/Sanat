@@ -117,6 +117,18 @@ Processes the text in each translation using [Smartypants].
 [Smartypants]: https://daringfireball.net/projects/smartypants/
 
 
+
+Design Principles
+-----------------
+
+This program is written in Go. This helps satisfy these requirements:
+
+- **Speed:** This program needs to be fast if it’s going to be included in build processes — we don’t want it to make builds noticeably slower.
+- **Portability:** This program needs to run on multiple operating systems (at least OS X, Linux, and Windows) so that it can be used on any developer workstation or build server.
+- **Single-file executable binary:** This program needs to be a single-file executable binary with no external dependencies so that it’d be straightforward and simple to install, or commit into source control (so that it wouldn’t need to be installed as a separate step.)
+
+
+
 License
 -------
 

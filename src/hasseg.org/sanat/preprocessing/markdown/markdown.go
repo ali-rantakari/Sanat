@@ -28,8 +28,11 @@ func htmlFromMarkdown(md string) string {
 		blackfriday.EXTENSION_STRIKETHROUGH |
 		blackfriday.EXTENSION_SPACE_HEADERS
 
+	// Leading whitespace can trigger Markdown features like
+	// code blocks so let's avoid that by trimming the input
+	//
 	ret := string(blackfriday.MarkdownOptions(
-		[]byte(md),
+		[]byte(strings.TrimSpace(md)),
 		blackfriday.HtmlRenderer(htmlFlags, "", ""),
 		blackfriday.Options{Extensions: markdownExtensions}))
 

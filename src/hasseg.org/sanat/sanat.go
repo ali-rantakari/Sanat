@@ -22,16 +22,12 @@ func main() {
 	usage := `Sanat.
 
 Usage:
-  Sanat <input_file> <output_format> <output_dir> [-p value]
+  Sanat generate <input_file> <output_format> <output_dir> [-p value]
 
 Options:
   -p --processors list  The preprocessors to use (comma-separated)
   `
 	args, _ := docopt.Parse(usage, nil, true, "Sanat", false)
-
-	inputFilePath := args["<input_file>"].(string)
-	outputDirPath := args["<output_dir>"].(string)
-	outputFormat := args["<output_format>"].(string)
 
 	// (Optionally) get "group" preprocessor for all the preprocessors
 	// we want to run
@@ -49,6 +45,8 @@ Options:
 		}
 	}
 
+	inputFilePath := args["<input_file>"].(string)
+
 	// Parse translation file
 	//
 	translationSet, err := parser.TranslationSetFromFile(inputFilePath, preProcessor, parserErrorHandler)
@@ -56,12 +54,17 @@ Options:
 		os.Exit(1)
 	}
 
-	// Write output
-	//
-	outputFunction, err := output.OutputFunctionForName(outputFormat)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
-		os.Exit(1)
+	if args["generate"].(bool) {
+		outputDirPath := args["<output_dir>"].(string)
+		outputFormat := args["<output_format>"].(string)
+
+		// Write output
+		//
+		outputFunction, err := output.OutputFunctionForName(outputFormat)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+			os.Exit(1)
+		}
+		outputFunction(translationSet, outputDirPath)
 	}
-	outputFunction(translationSet, outputDirPath)
 }

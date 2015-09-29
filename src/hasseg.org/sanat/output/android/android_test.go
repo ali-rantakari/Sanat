@@ -84,4 +84,10 @@ func TestOverallXMLFileGeneration(t *testing.T) {
 		x := android.GetStringsFileContents(ts, lang)
 		assert.True(t, xmlIsValid(x), "")
 	}
+	{
+		lang := "en"
+		ts := makeTranslationSet("Sektion -- two dashes", "Foo", lang, "Some text")
+		x := android.GetStringsFileContents(ts, lang)
+		assert.True(t, xmlIsValid(x), "-- in XML comment (section name)")
+	}
 }

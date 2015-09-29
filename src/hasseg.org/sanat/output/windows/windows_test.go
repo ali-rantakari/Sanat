@@ -82,4 +82,10 @@ func TestOverallXMLFileGeneration(t *testing.T) {
 		x := windows.GetStringsFileContents(ts, lang)
 		assert.True(t, xmlIsValid(x), "")
 	}
+	{
+		lang := "en"
+		ts := makeTranslationSet("Sektion -- two dashes", "Foo", lang, "Some text")
+		x := windows.GetStringsFileContents(ts, lang)
+		assert.True(t, xmlIsValid(x), "-- in XML comment (section name)")
+	}
 }

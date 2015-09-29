@@ -176,14 +176,16 @@ func (p *translationParser) parseTranslationSet(inputPath string, preprocessor p
 			continue
 		}
 
-		if strings.HasPrefix(trimmedLine, "===") {
+		leadingWhitespaceCount := len(util.LeadingWhitespace(rawLine))
+
+		if strings.HasPrefix(rawLine, "===") { // Section heading
 			currentSection = set.AddSection(strings.Trim(trimmedLine, "= "))
-		} else if !strings.HasPrefix(rawLine, "  ") {
+		} else if leadingWhitespaceCount == 2 { // Translation key heading
 			if currentSection == nil { // Add implicit default section if needed
 				currentSection = set.AddSection("")
 			}
 			currentTranslation = currentSection.AddTranslation(trimmedLine)
-		} else {
+		} else if leadingWhitespaceCount == 4 { // Translation metadata/value row
 			if currentTranslation == nil {
 				p.reportError("Loose line not in a translation block: " + rawLine)
 			} else {

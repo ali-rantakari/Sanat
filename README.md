@@ -18,7 +18,9 @@ Translation File Syntax
 
 ### Section titles
 
-Section titles are prepended by at least three `=` symbols:
+_(Sections are optional — translation files don't have to contain sections.)_
+
+Section titles begin with least three `=` symbols at the beginning of a line:
 
     === Login view
 
@@ -26,15 +28,13 @@ Both leading and trailing `=` symbols are okay:
 
     ======== Login view ========
 
-Sections are optional — translation files don't have to contain sections.
-
 
 ### Translations
 
-__Translation keys__ (e.g. `LoginView.Title` below) are not indented.
-__Translation values__ are indented by at least two spaces:
+__Translation keys__ (e.g. `LoginView.Title` below) are indented by two spaces.
+__Translation values__ are indented by four spaces:
 
-    LoginView.Title
+      LoginView.Title
         en = Log in
         fi = Kirjaudu sisään
 
@@ -48,7 +48,7 @@ The translation text content may be double quoted:
 
 Translations can be limited to certain platforms like so:
 
-    LoginView.Title
+      LoginView.Title
         en = Log in
         fi = Kirjaudu sisään
         platforms = apple, android

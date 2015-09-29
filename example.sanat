@@ -1,32 +1,32 @@
 
-# Kommentti
-Vapaa
-    fi = Vapaa \{foo} {@} ja {@} taas
+  # Kommentti
+  Vapaa
+    fi = Vapaa \{f} {@} ja {@} taas
     sv = Hej då
     en = What up
 
 
 === Osio 1
 
-Eka
+  Eka
     # Kommentti
-    fi = Suomeksi \{foo} {@} ja {@} taas
+    fi = Suomeksi \{@} {3:f.2} ja {@} taas
     sv = Ruotsiksi
-    en = Englanniksi
-Toka
-    platforms = foo, apple
+    en = Englanniksi _moro_
+  Toka
+    platforms = android, apple
     fi = \"Suomeksi 2"
     sv = "Ruotsiksi 2 "
-    en = " Englanniksi 2"
+    en = " Englanniksi 2 alskdj alsdj alsdj lsakjd laskjd laksj dlaksj dlaksj dlkasj dlkasj dlksaj dlaskj dlkas jdlkasj dlkasj dlkas jdlksa jdlkas jdlkas jdalsk d"
 
 ======== Osio 2 ========
 
-Eka2
+  Eka2
     fi = XSuomeksi
     sv = XRuotsiksi
     en = XEnglanniksi
 
-Toka2
+  Toka2
     fi = XSuomeksi 2
     sv = XRuotsiksi 2
     en = XEnglanniksi 2

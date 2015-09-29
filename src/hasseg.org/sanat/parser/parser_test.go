@@ -1,11 +1,14 @@
 package parser
 
 import (
+	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/preprocessing"
 )
 
 func TestNewFormatSpecifierSegmentFromSpecifierText(t *testing.T) {
@@ -103,4 +106,95 @@ func TestPlatformsFromCommaSeparatedString(t *testing.T) {
 	ass([]model.TranslationPlatform{model.PlatformApple}, "apple,")
 	ass([]model.TranslationPlatform{model.PlatformApple}, ",apple")
 	ass([]model.TranslationPlatform{model.PlatformApple}, ",apple,,")
+}
+
+func TestParserErrorReporting(t *testing.T) {
+	assertError := func(input string, expectedErrorLineNumber int, expectedErrorMessageMatch string) {
+		errorMessages := make([]string, 0)
+		errorMessageLineNumbers := make([]int, 0)
+		errorMessageCollector := func(lineNumber int, message string) {
+			errorMessages = append(errorMessages, message)
+			errorMessageLineNumbers = append(errorMessageLineNumbers, lineNumber)
+		}
+		p := translationParser{errorHandler: errorMessageCollector}
+		p.parseTranslationSet(bytes.NewBufferString(input), preprocessing.NewNoOpPreprocessor())
+
+		if expectedErrorLineNumber < 0 {
+			assert.Equal(t, 0, p.numErrors, input)
+		} else {
+			assert.True(t, 1 <= p.numErrors, input)
+
+			if 0 < len(errorMessageLineNumbers) {
+				assert.Equal(t, expectedErrorLineNumber, errorMessageLineNumbers[0], input)
+			} else {
+				assert.Fail(t, "errorMessageLineNumbers is empty")
+			}
+
+			if 0 < len(errorMessages) {
+				assert.True(t, strings.Contains(errorMessages[0], expectedErrorMessageMatch),
+					`"`+errorMessages[0]+`" should contain: "`+expectedErrorMessageMatch+`"`)
+			} else {
+				assert.Fail(t, "errorMessages is empty")
+			}
+		}
+	}
+
+	assertNoError := func(input string) {
+		assertError(input, -1, "")
+	}
+
+	assertNoError(`
+  Title
+    en = Hello world
+    fi = Moro maailma`)
+
+	assertNoError(`
+  Title
+    en=Hello world
+    fi=Moro maailma`)
+
+	assertNoError(`
+=== Section Name ===
+  Title
+    comment = This is a comment
+    tags = a, b, c
+    platforms = android, apple, windows
+    en = Lorem {@} {s} {d} {f} {1:s} {2:f.34}
+    fi = Moro maailma`) // Basic case exercising all features
+
+	assertNoError(`
+  Title
+    comment =
+    tags =
+    platforms =
+    en =
+    fi =`) // Empty values are okay (not a parser error, anyway)
+
+	assertError(`
+  Title
+    platforms = xx
+    en = Hello world
+    fi = Moro maailma`,
+		3, "Unknown platform value")
+
+	assertError(`
+  Title
+  en = Hello world`,
+		3, "Translation 'Title' has no values")
+
+	assertError(`
+    en = Hello world`,
+		2, "Loose line")
+
+	assertError(`
+  Title
+    en Hello world
+    fi = Moro maailma`,
+		3, "Cannot find separator '=' on line")
+
+	assertError(`
+Title
+    en = Hello world
+    fi = Moro maailma`,
+		2, "Unknown un-indented line")
 }

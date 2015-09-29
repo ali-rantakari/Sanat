@@ -155,6 +155,8 @@ This program is written in Go. This helps satisfy these requirements:
 License
 -------
 
+GPLv2.
+
 Please see the `LICENSE` file.
 
 

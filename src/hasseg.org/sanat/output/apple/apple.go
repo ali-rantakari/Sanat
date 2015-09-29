@@ -31,6 +31,10 @@ func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegmen
 	return ret
 }
 
+func escapedForComment(s string) string {
+	return strings.Replace(s, "*/", "* /", -1)
+}
+
 func SanitizedForStringValue(text string) string {
 	return strings.Replace(text, "%", "%%", -1)
 }
@@ -55,7 +59,7 @@ func getStringsFileContents(set model.TranslationSet, language string) string {
 		" */\n\n"
 	for _, section := range set.Sections {
 		if 0 < len(section.Name) {
-			ret += "\n/********** " + section.Name + " **********/\n\n"
+			ret += "\n/********** " + escapedForComment(section.Name) + " **********/\n\n"
 		}
 		for _, translation := range section.Translations {
 			if !translation.IsForPlatform(model.PlatformApple) {

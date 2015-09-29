@@ -6,6 +6,7 @@ import (
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/preprocessing/base"
 	"hasseg.org/sanat/preprocessing/markdown"
+	"hasseg.org/sanat/preprocessing/smartypants"
 )
 
 type PreProcessor interface {
@@ -36,7 +37,8 @@ func (pp GroupPreProcessor) ProcessValueSegments(segments []model.Segment) []mod
 
 func PreProcessorForName(name string) (PreProcessor, error) {
 	var PreProcessorsByName = map[string]PreProcessor{
-		"markdown": markdown.PreProcessor{},
+		"markdown":    markdown.PreProcessor{},
+		"smartypants": smartypants.PreProcessor{},
 	}
 
 	ret := PreProcessorsByName[name]

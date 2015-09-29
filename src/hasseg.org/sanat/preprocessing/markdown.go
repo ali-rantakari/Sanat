@@ -53,7 +53,7 @@ func htmlFromMarkdown(md string) string {
 }
 
 type MarkdownPreProcessor struct {
-	*NoOpPreProcessor
+	NoOpPreProcessor
 }
 
 func (pp MarkdownPreProcessor) ProcessRawValue(v string) string {

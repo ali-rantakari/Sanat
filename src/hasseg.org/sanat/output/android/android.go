@@ -64,8 +64,7 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 	ret := "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n"
 	for _, section := range set.Sections {
 		if 0 < len(section.Name) {
-			sanitizedSectionName := strings.Replace(section.Name, "--", "- -", -1)
-			ret += "\n    <!-- " + sanitizedSectionName + " -->\n\n"
+			ret += "\n    <!-- ********** " + sanitizedForXMLComment(section.Name) + " ********** -->\n\n"
 		}
 		for _, translation := range section.Translations {
 			if !translation.IsForPlatform(model.PlatformApple) {

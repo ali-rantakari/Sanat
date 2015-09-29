@@ -175,8 +175,12 @@ func (p *translationParser) parseTranslationSet(inputReader io.Reader, preproces
 
 		leadingWhitespaceCount := len(util.LeadingWhitespace(rawLine))
 
-		if strings.HasPrefix(rawLine, "===") { // Section heading
-			currentSection = set.AddSection(strings.Trim(trimmedLine, "= "))
+		if leadingWhitespaceCount == 0 { // Section heading
+			if strings.HasPrefix(rawLine, "===") {
+				currentSection = set.AddSection(strings.Trim(trimmedLine, "= "))
+			} else {
+				p.reportError("Unknown un-indented line '" + rawLine + "' — Prepend with === if section; indent if translation key.")
+			}
 		} else if leadingWhitespaceCount == 2 { // Translation key heading
 			if currentSection == nil { // Add implicit default section if needed
 				currentSection = set.AddSection("")

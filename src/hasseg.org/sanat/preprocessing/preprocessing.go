@@ -46,7 +46,7 @@ func PreprocessorForName(name string) (Preprocessor, error) {
 		return ret, nil
 	}
 
-	e := "Unknown Preprocessor '" + name + "' — available Preprocessors: "
+	e := "Unknown preprocessor '" + name + "' — available preprocessors: "
 	for PreprocessorName, _ := range PreprocessorsByName {
 		e += PreprocessorName + " "
 	}

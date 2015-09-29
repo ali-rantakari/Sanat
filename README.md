@@ -59,6 +59,7 @@ The currently supported values are:
 
 - `apple` (Apple platforms; iOS and OS X)
 - `android`
+- `windows` (.NET)
 
 
 ### Format specifiers

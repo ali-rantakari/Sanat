@@ -30,6 +30,8 @@ func TestLeadingWhitespace(t *testing.T) {
 	ass("", "Moro")
 	ass(" ", " Moro")
 	ass("   ", "   Moro")
+	ass("\t", "\tMoro")
+	ass(" \t ", " \t Moro")
 	ass("", ".   Moro")
 	ass("", "xx   Moro")
 	ass("", "Moro ")
@@ -50,5 +52,7 @@ func TestTrailingWhitespace(t *testing.T) {
 	ass("", "xx   Moro")
 	ass(" ", "Moro ")
 	ass("  ", "Moro  ")
+	ass("\t", "Moro\t")
+	ass(" \t ", "Moro \t ")
 	ass("", "Moro  xx")
 }

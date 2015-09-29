@@ -15,11 +15,15 @@ func ComponentsFromCommaSeparatedList(text string) []string {
 	return ret
 }
 
+func IsWhitespace(c byte) bool {
+	return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v'
+}
+
 func LeadingWhitespace(s string) string {
 	ret := ""
 	for i := 0; i < len(s); i++ {
-		if s[i] == ' ' {
-			ret += " "
+		if IsWhitespace(s[i]) {
+			ret += string(s[i])
 		} else {
 			break
 		}
@@ -30,8 +34,8 @@ func LeadingWhitespace(s string) string {
 func TrailingWhitespace(s string) string {
 	ret := ""
 	for i := len(s) - 1; 0 <= i; i-- {
-		if s[i] == ' ' {
-			ret += " "
+		if IsWhitespace(s[i]) {
+			ret += string(s[i])
 		} else {
 			break
 		}

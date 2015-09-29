@@ -2,6 +2,8 @@ package model
 
 import ()
 
+// TranslationFormatDataType is the “enum” type for format
+// specifier data types.
 type TranslationFormatDataType int
 
 const (
@@ -12,6 +14,8 @@ const (
 	DataTypeFloat
 )
 
+// TranslationPlatform is the “enum” type for software
+// platform indicator values.
 type TranslationPlatform int
 
 const (
@@ -21,34 +25,47 @@ const (
 	PlatformWindows
 )
 
+// TextSegment is a piece of a translation string value
+// containing text.
 type TextSegment struct {
 	Text string
 }
 
+// FormatSpecifierSegment is a piece of a translation string
+// value that describes the attributes of a format specifier.
 type FormatSpecifierSegment struct {
 	SemanticOrderIndex int
 	DataType           TranslationFormatDataType
 	NumberOfDecimals   int
 }
 
+// Segment is the “union” type for translation string value
+// segments.
 type Segment interface{}
 
+// TranslationValue is a value for a specific language for
+// a translation string.
 type TranslationValue struct {
 	Language string
 	Segments []Segment
 }
 
+// Translation is a unique localizable string containing
+// values for N languages. It can be limited only to specific
+// platforms.
 type Translation struct {
 	Key       string
 	Values    []TranslationValue
 	Platforms []TranslationPlatform
 }
 
+// TranslationSection is a named group of Translations.
 type TranslationSection struct {
 	Name         string
 	Translations []Translation
 }
 
+// TranslationSet is a set of TranslationSections.
 type TranslationSet struct {
 	Sections  []TranslationSection
 	Languages map[string]bool

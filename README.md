@@ -2,13 +2,26 @@
 Sanat
 =====
 
-Translates a string resource translation file that looks something like this:
+Translates a “master” string resource translation file that looks something like this:
 
     LoginView.Title
         en = Log in
         fi = Kirjaudu sisään
+        jp = ログイン
 
-…into string resource files appropriate for use on several different software platforms.
+…into string resource files appropriate for use on several different software platforms:
+
+                                 all-translations.sanat
+                                 ~~~~~~~~~~~~~~~~~~~~~~
+                                           |
+                                        (sanat)
+               ____________________________|_______________________________ ...
+              |                            |                           |
+           Android                     iOS / OS X                   Windows
+    __________|__________    ______________|_____________    __________|_________
+    values-en/strings.xml    en.lproj/Localizable.strings    AppResources-en.resx
+    values-fi/strings.xml    fi.lproj/Localizable.strings    AppResources-fi.resx
+    values-jp/strings.xml    jp.lproj/Localizable.strings    AppResources-jp.resx
 
 Run the main program with the `--help` argument to see “usage” information.
 

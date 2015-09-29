@@ -67,7 +67,7 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 			ret += "\n    <!-- ********** " + sanitizedForXMLComment(section.Name) + " ********** -->\n\n"
 		}
 		for _, translation := range section.Translations {
-			if !translation.IsForPlatform(model.PlatformApple) {
+			if !translation.IsForPlatform(model.PlatformAndroid) {
 				continue
 			}
 			for _, value := range translation.Values {

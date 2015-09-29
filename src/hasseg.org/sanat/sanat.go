@@ -38,7 +38,7 @@ Options:
 	//
 	preprocessorsArg := args["--processors"]
 	var preProcessor preprocessing.PreProcessor
-	preProcessor = preprocessing.NoOpPreProcessor{}
+	preProcessor = preprocessing.NewNoOpPreProcessor()
 	if preprocessorsArg != nil {
 		var err error
 		preprocessorNames := util.ComponentsFromCommaSeparatedList(preprocessorsArg.(string))

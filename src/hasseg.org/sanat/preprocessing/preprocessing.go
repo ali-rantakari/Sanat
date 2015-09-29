@@ -4,23 +4,13 @@ import (
 	"errors"
 
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/preprocessing/base"
+	"hasseg.org/sanat/preprocessing/markdown"
 )
 
 type PreProcessor interface {
 	ProcessRawValue(string) string
 	ProcessValueSegments([]model.Segment) []model.Segment
-}
-
-// NoOpPreProcessor is a base type that does nothing. It provides the
-// boilerplate for processor endpoints that "concrete" preprocessors are not
-// interested in using.
-type NoOpPreProcessor struct{}
-
-func (pp NoOpPreProcessor) ProcessRawValue(s string) string {
-	return s
-}
-func (pp NoOpPreProcessor) ProcessValueSegments(segments []model.Segment) []model.Segment {
-	return segments
 }
 
 // GroupPreProcessor simply wraps a group of "concrete" preprocessors and
@@ -46,7 +36,7 @@ func (pp GroupPreProcessor) ProcessValueSegments(segments []model.Segment) []mod
 
 func PreProcessorForName(name string) (PreProcessor, error) {
 	var PreProcessorsByName = map[string]PreProcessor{
-		"markdown": MarkdownPreProcessor{},
+		"markdown": markdown.PreProcessor{},
 	}
 
 	ret := PreProcessorsByName[name]
@@ -71,4 +61,8 @@ func GroupPreProcessorForProcessorNames(names []string) (PreProcessor, error) {
 		ret = append(ret, processor)
 	}
 	return GroupPreProcessor{ConcreteProcessors: ret}, nil
+}
+
+func NewNoOpPreProcessor() PreProcessor {
+	return base.NoOpPreProcessor{}
 }

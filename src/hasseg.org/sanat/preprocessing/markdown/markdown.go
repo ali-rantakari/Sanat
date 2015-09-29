@@ -1,10 +1,11 @@
-package preprocessing
+package markdown
 
 import (
 	"strings"
 
 	"github.com/russross/blackfriday"
 
+	"hasseg.org/sanat/preprocessing/base"
 	"hasseg.org/sanat/util"
 )
 
@@ -52,10 +53,10 @@ func htmlFromMarkdown(md string) string {
 	return ret
 }
 
-type MarkdownPreProcessor struct {
-	NoOpPreProcessor
+type PreProcessor struct {
+	base.NoOpPreProcessor
 }
 
-func (pp MarkdownPreProcessor) ProcessRawValue(v string) string {
+func (pp PreProcessor) ProcessRawValue(v string) string {
 	return htmlFromMarkdown(v)
 }

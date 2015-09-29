@@ -97,6 +97,12 @@ Translations can be preprocessed by specifying one of the following preprocessor
 
 Translates the text in each translation from Markdown to HTML.
 
+### `smartypants`
+
+Processes the text in each translation using [Smartypants].
+
+
+[Smartypants]: https://daringfireball.net/projects/smartypants/
 
 
 License

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>sanat</string>
+	</array>
+	<key>name</key>
+	<string>Sanat</string>
+	<key>patterns</key>
+	<array>
+
+		<!-- Comments -->
+		<dict>
+			<key>name</key>
+			<string>comment</string>
+			<key>match</key>
+			<string>^\s*#.*$</string>
+		</dict>
+
+		<!-- Section headings -->
+		<dict>
+			<key>name</key>
+			<string>entity.name.function</string>
+			<key>match</key>
+			<string>^\s*===.*\s*$</string>
+		</dict>
+
+		<!-- Translation key headings -->
+		<dict>
+			<key>name</key>
+			<string>variable.parameter</string>
+			<key>match</key>
+			<string>^  [^\s]+.*$</string>
+		</dict>
+
+		<!-- Metadata -->
+		<dict>
+			<key>name</key>
+			<string>storage.type.class</string>
+			<key>match</key>
+			<string>^[ ]{4}tags\s*=\s*</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>storage.type.class</string>
+			<key>match</key>
+			<string>^[ ]{4}platforms\s*=\s*</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>comment</string>
+			<key>match</key>
+			<string>^[ ]{4}comment\s*=\s*.*$</string>
+		</dict>
+
+		<!-- Translation value rows (lang = value) -->
+		<dict>
+			<key>name</key>
+			<string>keyword.control</string>
+			<key>match</key>
+			<string>^[ ]{4}[^\s]+\s*=\s*</string>
+		</dict>
+
+		<!-- Escaped format specifiers (i.e. _not_ actually format specifiers) -->
+		<dict>
+			<key>name</key>
+			<string>other</string>
+			<key>match</key>
+			<string>\\\{[^}]*\}</string>
+		</dict>
+
+		<!-- Format specifiers -->
+		<dict>
+			<key>name</key>
+			<string>constant.numeric</string>
+			<key>match</key>
+			<string>\{(\d+:)?[@ds]\}</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>constant.numeric</string>
+			<key>match</key>
+			<string>\{(\d+:)?[f](\.\d+)?\}</string>
+		</dict>
+
+		<!-- Escape sequences (newlines etc.) -->
+		<dict>
+			<key>name</key>
+			<string>constant.character</string>
+			<key>match</key>
+			<string>\\[nte]</string>
+		</dict>
+
+		<!-- XML tags -->
+		<dict>
+			<key>name</key>
+			<string>storage.type</string>
+			<key>match</key>
+			<string>&lt;[^&gt;]*/?&gt;</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>text.sanat</string>
+	<key>uuid</key>
+	<string>665893A2-D94C-4E50-9176-20795F68BFD4</string>
+</dict>
+</plist>

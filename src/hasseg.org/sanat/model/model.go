@@ -57,6 +57,7 @@ type Translation struct {
 	Key       string
 	Values    []TranslationValue
 	Platforms []TranslationPlatform
+	Tags      []string
 }
 
 // TranslationSection is a named group of Translations.

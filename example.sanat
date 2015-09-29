@@ -15,6 +15,7 @@
     en = Englanniksi _moro_
   Toka
     platforms = android, apple
+    tags = foo, bar
     fi = \"Suomeksi 2"
     sv = "Ruotsiksi 2 "
     en = " Englanniksi 2 alskdj alsdj alsdj lsakjd laskjd laksj dlaksj dlaksj dlkasj dlkasj dlksaj dlaskj dlkas jdlkasj dlkasj dlkas jdlksa jdlkas jdlkas jdalsk d"

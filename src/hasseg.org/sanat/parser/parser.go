@@ -198,8 +198,11 @@ func (p *translationParser) parseTranslationSet(inputPath string, preprocessor p
 					if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
 						value = value[1 : len(value)-1]
 					}
-					if strings.ToLower(key) == "platforms" {
+					lowerKey := strings.ToLower(key)
+					if lowerKey == "platforms" {
 						currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
+					} else if lowerKey == "tags" {
+						currentTranslation.Tags = util.ComponentsFromCommaSeparatedList(value)
 					} else {
 						value = preprocessor.ProcessRawValue(value)
 						segments := preprocessor.ProcessValueSegments(p.segmentsFromTranslationValueString(value))

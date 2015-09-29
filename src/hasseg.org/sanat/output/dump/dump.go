@@ -3,6 +3,7 @@ package dump
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"hasseg.org/sanat/model"
 )
@@ -52,6 +53,9 @@ func DumpTranslationSet(set model.TranslationSet, outputDirPath string) {
 				for _, platform := range translation.Platforms {
 					fmt.Println("    Platform: " + StringForPlatform(platform))
 				}
+			}
+			if 0 < len(translation.Tags) {
+				fmt.Println("    Tags: " + strings.Join(translation.Tags, ", "))
 			}
 			for _, value := range translation.Values {
 				fmt.Println("    Language: " + value.Language)

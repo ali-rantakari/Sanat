@@ -3,6 +3,7 @@ package parser
 import (
 	"bufio"
 	"errors"
+	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -155,12 +156,8 @@ func (p *translationParser) segmentsFromTranslationValueString(text string) []mo
 	return ret
 }
 
-func (p *translationParser) parseTranslationSet(inputPath string, preprocessor preprocessing.Preprocessor) model.TranslationSet {
-	f, err := os.Open(inputPath)
-	if err != nil {
-		panic(err)
-	}
-	lineScanner := bufio.NewScanner(f)
+func (p *translationParser) parseTranslationSet(inputReader io.Reader, preprocessor preprocessing.Preprocessor) model.TranslationSet {
+	lineScanner := bufio.NewScanner(inputReader)
 
 	set := model.NewTranslationSet()
 	var currentSection *model.TranslationSection
@@ -224,8 +221,12 @@ func (p *translationParser) parseTranslationSet(inputPath string, preprocessor p
 }
 
 func TranslationSetFromFile(inputPath string, preprocessor preprocessing.Preprocessor, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
+	f, err := os.Open(inputPath)
+	if err != nil {
+		panic(err)
+	}
 	parser := translationParser{errorHandler: errorHandler}
-	ret := parser.parseTranslationSet(inputPath, preprocessor)
+	ret := parser.parseTranslationSet(f, preprocessor)
 	if parser.numErrors == 0 {
 		return ret, nil
 	} else {

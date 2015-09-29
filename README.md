@@ -4,7 +4,9 @@ Sanat
 
 Translates a “master” string resource translation file that looks something like this:
 
-    LoginView.Title
+    === Login flow ===
+    
+      LoginView.Title
         en = Log in
         fi = Kirjaudu sisään
         jp = ログイン

@@ -119,16 +119,19 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 		xmlHeaderString
 
 	for _, section := range set.Sections {
-		if 0 < len(section.Name) {
-			sanitizedSectionName := strings.Replace(section.Name, "--", "- -", -1)
-			ret += "\n  <!-- ********** " + sanitizedSectionName + " ********** -->\n\n"
-		}
+		sectionHeadingPrinted := false
 		for _, translation := range section.Translations {
 			if !translation.IsForPlatform(model.PlatformWindows) {
 				continue
 			}
 			for _, value := range translation.Values {
 				if value.Language == language {
+					if !sectionHeadingPrinted && 0 < len(section.Name) {
+						sanitizedSectionName := strings.Replace(section.Name, "--", "- -", -1)
+						ret += "\n  <!-- ********** " + sanitizedSectionName + " ********** -->\n\n"
+						sectionHeadingPrinted = true
+					}
+
 					ret += fmt.Sprintf("  <data name=\"%s\" xml:space=\"preserve\">\n",
 						xmlEscaped(translation.Key))
 					ret += fmt.Sprintf("    <value>%s</value>\n",

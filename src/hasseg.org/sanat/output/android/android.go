@@ -63,15 +63,17 @@ func sanitizedForXMLComment(s string) string {
 func GetStringsFileContents(set model.TranslationSet, language string) string {
 	ret := "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n"
 	for _, section := range set.Sections {
-		if 0 < len(section.Name) {
-			ret += "\n    <!-- ********** " + sanitizedForXMLComment(section.Name) + " ********** -->\n\n"
-		}
+		sectionHeadingPrinted := false
 		for _, translation := range section.Translations {
 			if !translation.IsForPlatform(model.PlatformAndroid) {
 				continue
 			}
 			for _, value := range translation.Values {
 				if value.Language == language {
+					if !sectionHeadingPrinted && 0 < len(section.Name) {
+						ret += "\n    <!-- ********** " + sanitizedForXMLComment(section.Name) + " ********** -->\n\n"
+						sectionHeadingPrinted = true
+					}
 					if 0 < len(translation.Comment) {
 						ret += fmt.Sprintf("    <!-- %s -->\n",
 							sanitizedForXMLComment(translation.Comment))

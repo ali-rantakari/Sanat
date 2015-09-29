@@ -58,9 +58,7 @@ func getStringsFileContents(set model.TranslationSet, language string) string {
 		" * Language: " + language + "\n" +
 		" */\n\n"
 	for _, section := range set.Sections {
-		if 0 < len(section.Name) {
-			ret += "\n/********** " + escapedForComment(section.Name) + " **********/\n\n"
-		}
+		sectionHeadingPrinted := false
 		for _, translation := range section.Translations {
 			if !translation.IsForPlatform(model.PlatformApple) {
 				continue
@@ -70,6 +68,11 @@ func getStringsFileContents(set model.TranslationSet, language string) string {
 			}
 			for _, value := range translation.Values {
 				if value.Language == language {
+					if !sectionHeadingPrinted && 0 < len(section.Name) {
+						ret += "\n/********** " + escapedForComment(section.Name) + " **********/\n\n"
+						sectionHeadingPrinted = true
+					}
+
 					ret += fmt.Sprintf("\"%s\" = \"%s\";\n",
 						translation.Key,
 						StringFromSegments(value.Segments))

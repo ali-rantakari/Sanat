@@ -8,7 +8,7 @@ import (
 
 type PreProcessor interface {
 	ProcessRawValue(string) string
-	ProcessValueSegments(*[]model.Segment)
+	ProcessValueSegments([]model.Segment) []model.Segment
 }
 
 // NoOpPreProcessor is a base type that does nothing. It provides the
@@ -19,8 +19,8 @@ type NoOpPreProcessor struct{}
 func (pp NoOpPreProcessor) ProcessRawValue(s string) string {
 	return s
 }
-func (pp NoOpPreProcessor) ProcessValueSegments(segments *[]model.Segment) {
-	return
+func (pp NoOpPreProcessor) ProcessValueSegments(segments []model.Segment) []model.Segment {
+	return segments
 }
 
 // GroupPreProcessor simply wraps a group of "concrete" preprocessors and
@@ -36,10 +36,12 @@ func (pp GroupPreProcessor) ProcessRawValue(s string) string {
 	}
 	return ret
 }
-func (pp GroupPreProcessor) ProcessValueSegments(segments *[]model.Segment) {
+func (pp GroupPreProcessor) ProcessValueSegments(segments []model.Segment) []model.Segment {
+	ret := segments
 	for _, processor := range pp.ConcreteProcessors {
-		processor.ProcessValueSegments(segments)
+		ret = processor.ProcessValueSegments(ret)
 	}
+	return ret
 }
 
 func PreProcessorForName(name string) (PreProcessor, error) {

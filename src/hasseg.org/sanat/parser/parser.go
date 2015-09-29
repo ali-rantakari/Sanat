@@ -200,8 +200,8 @@ func (p *translationParser) parseTranslationSet(inputPath string, preprocessor p
 						currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
 					} else {
 						value = preprocessor.ProcessRawValue(value)
-						translationValue := currentTranslation.AddValue(key, p.segmentsFromTranslationValueString(value))
-						preprocessor.ProcessValueSegments(&translationValue.Segments)
+						segments := preprocessor.ProcessValueSegments(p.segmentsFromTranslationValueString(value))
+						currentTranslation.AddValue(key, segments)
 						set.Languages[key] = true
 					}
 				}

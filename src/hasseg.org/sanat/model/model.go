@@ -92,6 +92,15 @@ func (translation *Translation) AddValue(language string, segments []Segment) *T
 	return &translation.Values[len(translation.Values)-1]
 }
 
+func (translation Translation) ValueForLanguage(language string) *TranslationValue {
+	for _, value := range translation.Values {
+		if value.Language == language {
+			return &value
+		}
+	}
+	return nil
+}
+
 func (translation Translation) IsForPlatform(givenPlatform TranslationPlatform) bool {
 	if len(translation.Platforms) == 0 {
 		return true

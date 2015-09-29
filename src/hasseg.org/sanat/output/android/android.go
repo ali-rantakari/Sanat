@@ -68,21 +68,24 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 			if !translation.IsForPlatform(model.PlatformAndroid) {
 				continue
 			}
-			for _, value := range translation.Values {
-				if value.Language == language {
-					if !sectionHeadingPrinted && 0 < len(section.Name) {
-						ret += "\n    <!-- ********** " + sanitizedForXMLComment(section.Name) + " ********** -->\n\n"
-						sectionHeadingPrinted = true
-					}
-					if 0 < len(translation.Comment) {
-						ret += fmt.Sprintf("    <!-- %s -->\n",
-							sanitizedForXMLComment(translation.Comment))
-					}
-					ret += fmt.Sprintf("    <string name=\"%s\">%s</string>\n",
-						xmlEscaped(translation.Key),
-						stringFromSegments(value.Segments))
-				}
+
+			value := translation.ValueForLanguage(language)
+			if value == nil {
+				continue
 			}
+
+			if !sectionHeadingPrinted && 0 < len(section.Name) {
+				ret += "\n    <!-- ********** " + sanitizedForXMLComment(section.Name) + " ********** -->\n\n"
+				sectionHeadingPrinted = true
+			}
+
+			if 0 < len(translation.Comment) {
+				ret += fmt.Sprintf("    <!-- %s -->\n",
+					sanitizedForXMLComment(translation.Comment))
+			}
+			ret += fmt.Sprintf("    <string name=\"%s\">%s</string>\n",
+				xmlEscaped(translation.Key),
+				stringFromSegments(value.Segments))
 		}
 	}
 	ret += "</resources>\n"

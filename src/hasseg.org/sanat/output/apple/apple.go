@@ -63,21 +63,23 @@ func getStringsFileContents(set model.TranslationSet, language string) string {
 			if !translation.IsForPlatform(model.PlatformApple) {
 				continue
 			}
+
+			value := translation.ValueForLanguage(language)
+			if value == nil {
+				continue
+			}
+
+			if !sectionHeadingPrinted && 0 < len(section.Name) {
+				ret += "\n/********** " + escapedForComment(section.Name) + " **********/\n\n"
+				sectionHeadingPrinted = true
+			}
+
 			if 0 < len(translation.Comment) {
 				ret += "/* " + escapedForComment(translation.Comment) + " */\n"
 			}
-			for _, value := range translation.Values {
-				if value.Language == language {
-					if !sectionHeadingPrinted && 0 < len(section.Name) {
-						ret += "\n/********** " + escapedForComment(section.Name) + " **********/\n\n"
-						sectionHeadingPrinted = true
-					}
-
-					ret += fmt.Sprintf("\"%s\" = \"%s\";\n",
-						translation.Key,
-						StringFromSegments(value.Segments))
-				}
-			}
+			ret += fmt.Sprintf("\"%s\" = \"%s\";\n",
+				translation.Key,
+				StringFromSegments(value.Segments))
 		}
 	}
 	return ret

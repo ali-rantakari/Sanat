@@ -37,12 +37,12 @@ Options:
 	// we want to run
 	//
 	preprocessorsArg := args["--processors"]
-	var preProcessor preprocessing.PreProcessor
-	preProcessor = preprocessing.NewNoOpPreProcessor()
+	var preProcessor preprocessing.Preprocessor
+	preProcessor = preprocessing.NewNoOpPreprocessor()
 	if preprocessorsArg != nil {
 		var err error
 		preprocessorNames := util.ComponentsFromCommaSeparatedList(preprocessorsArg.(string))
-		preProcessor, err = preprocessing.GroupPreProcessorForProcessorNames(preprocessorNames)
+		preProcessor, err = preprocessing.GroupPreprocessorForProcessorNames(preprocessorNames)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)

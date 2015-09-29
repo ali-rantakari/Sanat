@@ -9,7 +9,7 @@ import (
 )
 
 func TestMarkdownToHTML(t *testing.T) {
-	pp := markdown.PreProcessor{}
+	pp := markdown.Preprocessor{}
 
 	ass := func(expected string, input string) {
 		assert.Equal(t, expected, pp.ProcessRawValue(input), input)

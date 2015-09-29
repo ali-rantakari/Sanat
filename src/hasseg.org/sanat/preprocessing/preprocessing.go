@@ -9,25 +9,25 @@ import (
 	"hasseg.org/sanat/preprocessing/smartypants"
 )
 
-type PreProcessor interface {
+type Preprocessor interface {
 	ProcessRawValue(string) string
 	ProcessValueSegments([]model.Segment) []model.Segment
 }
 
-// GroupPreProcessor simply wraps a group of "concrete" preprocessors and
+// GroupPreprocessor simply wraps a group of "concrete" Preprocessors and
 // invokes all of them transparently.
-type GroupPreProcessor struct {
-	ConcreteProcessors []PreProcessor
+type GroupPreprocessor struct {
+	ConcreteProcessors []Preprocessor
 }
 
-func (pp GroupPreProcessor) ProcessRawValue(s string) string {
+func (pp GroupPreprocessor) ProcessRawValue(s string) string {
 	ret := s
 	for _, processor := range pp.ConcreteProcessors {
 		ret = processor.ProcessRawValue(ret)
 	}
 	return ret
 }
-func (pp GroupPreProcessor) ProcessValueSegments(segments []model.Segment) []model.Segment {
+func (pp GroupPreprocessor) ProcessValueSegments(segments []model.Segment) []model.Segment {
 	ret := segments
 	for _, processor := range pp.ConcreteProcessors {
 		ret = processor.ProcessValueSegments(ret)
@@ -35,36 +35,36 @@ func (pp GroupPreProcessor) ProcessValueSegments(segments []model.Segment) []mod
 	return ret
 }
 
-func PreProcessorForName(name string) (PreProcessor, error) {
-	var PreProcessorsByName = map[string]PreProcessor{
-		"markdown":    markdown.PreProcessor{},
-		"smartypants": smartypants.PreProcessor{},
+func PreprocessorForName(name string) (Preprocessor, error) {
+	var PreprocessorsByName = map[string]Preprocessor{
+		"markdown":    markdown.Preprocessor{},
+		"smartypants": smartypants.Preprocessor{},
 	}
 
-	ret := PreProcessorsByName[name]
+	ret := PreprocessorsByName[name]
 	if ret != nil {
 		return ret, nil
 	}
 
-	e := "Unknown preprocessor '" + name + "' — available preprocessors: "
-	for preprocessorName, _ := range PreProcessorsByName {
-		e += preprocessorName + " "
+	e := "Unknown Preprocessor '" + name + "' — available Preprocessors: "
+	for PreprocessorName, _ := range PreprocessorsByName {
+		e += PreprocessorName + " "
 	}
 	return nil, errors.New(e)
 }
 
-func GroupPreProcessorForProcessorNames(names []string) (PreProcessor, error) {
-	ret := make([]PreProcessor, 0)
+func GroupPreprocessorForProcessorNames(names []string) (Preprocessor, error) {
+	ret := make([]Preprocessor, 0)
 	for _, name := range names {
-		processor, err := PreProcessorForName(name)
+		processor, err := PreprocessorForName(name)
 		if err != nil {
 			return nil, err
 		}
 		ret = append(ret, processor)
 	}
-	return GroupPreProcessor{ConcreteProcessors: ret}, nil
+	return GroupPreprocessor{ConcreteProcessors: ret}, nil
 }
 
-func NewNoOpPreProcessor() PreProcessor {
-	return base.NoOpPreProcessor{}
+func NewNoOpPreprocessor() Preprocessor {
+	return base.NoOpPreprocessor{}
 }

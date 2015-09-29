@@ -155,7 +155,7 @@ func (p *translationParser) segmentsFromTranslationValueString(text string) []mo
 	return ret
 }
 
-func (p *translationParser) parseTranslationSet(inputPath string, preprocessor preprocessing.PreProcessor) model.TranslationSet {
+func (p *translationParser) parseTranslationSet(inputPath string, preprocessor preprocessing.Preprocessor) model.TranslationSet {
 	f, err := os.Open(inputPath)
 	if err != nil {
 		panic(err)
@@ -216,7 +216,7 @@ func (p *translationParser) parseTranslationSet(inputPath string, preprocessor p
 	return set
 }
 
-func TranslationSetFromFile(inputPath string, preprocessor preprocessing.PreProcessor, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
+func TranslationSetFromFile(inputPath string, preprocessor preprocessing.Preprocessor, errorHandler ParserErrorHandler) (model.TranslationSet, error) {
 	parser := translationParser{errorHandler: errorHandler}
 	ret := parser.parseTranslationSet(inputPath, preprocessor)
 	if parser.numErrors == 0 {

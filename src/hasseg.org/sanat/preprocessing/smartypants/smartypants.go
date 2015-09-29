@@ -20,10 +20,10 @@ func textProcessedBySmartypants(text string) string {
 	return html.UnescapeString(ret)
 }
 
-type PreProcessor struct {
-	base.NoOpPreProcessor
+type Preprocessor struct {
+	base.NoOpPreprocessor
 }
 
-func (pp PreProcessor) ProcessRawValue(v string) string {
+func (pp Preprocessor) ProcessRawValue(v string) string {
 	return textProcessedBySmartypants(v)
 }

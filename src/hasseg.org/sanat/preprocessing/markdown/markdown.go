@@ -56,10 +56,10 @@ func htmlFromMarkdown(md string) string {
 	return ret
 }
 
-type PreProcessor struct {
-	base.NoOpPreProcessor
+type Preprocessor struct {
+	base.NoOpPreprocessor
 }
 
-func (pp PreProcessor) ProcessRawValue(v string) string {
+func (pp Preprocessor) ProcessRawValue(v string) string {
 	return htmlFromMarkdown(v)
 }

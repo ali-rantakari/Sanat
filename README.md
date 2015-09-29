@@ -70,7 +70,15 @@ Translations can be given comments like so:
         fi = Kirjaudu sisään
         comment = The title to the login view
 
-These will be included in the generated platform-specific string resource files whenever possible.
+These kinds of comments will be included in the generated platform-specific string resource files whenever possible.
+
+Lines that start with `#` are comments that are _not_ included in the generated resource files:
+
+      # This comment is _not_ included in the output
+      LoginView.Title
+        en = Log in
+        fi = Kirjaudu sisään
+        comment = This comment is included in the output
 
 
 ### Format specifiers

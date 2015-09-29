@@ -23,6 +23,7 @@ func main() {
 
 Usage:
   Sanat generate <input_file> <output_format> <output_dir> [-p value]
+  Sanat validate <input_file>
 
 Options:
   -p --processors list  The preprocessors to use (comma-separated)

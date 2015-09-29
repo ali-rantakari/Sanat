@@ -7,6 +7,7 @@ import (
 	"hasseg.org/sanat/output/android"
 	"hasseg.org/sanat/output/apple"
 	"hasseg.org/sanat/output/dump"
+	"hasseg.org/sanat/output/windows"
 )
 
 type OutputFunction func(model.TranslationSet, string)
@@ -14,6 +15,7 @@ type OutputFunction func(model.TranslationSet, string)
 var OutputFunctionsByName = map[string]OutputFunction{
 	"apple":   apple.WriteStringsFiles,
 	"android": android.WriteStringsFiles,
+	"windows": windows.WriteStringsFiles,
 	"dump":    dump.DumpTranslationSet,
 }
 

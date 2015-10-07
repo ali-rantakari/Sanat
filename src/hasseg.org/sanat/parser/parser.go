@@ -173,15 +173,15 @@ func (p *translationParser) parseTranslationSet(inputReader io.Reader, preproces
 			continue
 		}
 
-		leadingWhitespaceCount := len(util.LeadingWhitespace(rawLine))
-
-		if leadingWhitespaceCount == 0 { // Section heading
+		processSectionHeadingRow := func() {
 			if strings.HasPrefix(rawLine, "===") {
 				currentSection = set.AddSection(strings.Trim(trimmedLine, "= "))
 			} else {
 				p.reportError("Unknown un-indented line '" + rawLine + "' — Prepend with === if section; indent if translation key.")
 			}
-		} else if leadingWhitespaceCount == 2 { // Translation key heading
+		}
+
+		processTranslationKeyHeadingRow := func() {
 			if currentSection == nil { // Add implicit default section if needed
 				currentSection = set.AddSection("")
 			}
@@ -191,34 +191,49 @@ func (p *translationParser) parseTranslationSet(inputReader io.Reader, preproces
 				}
 			}
 			currentTranslation = currentSection.AddTranslation(trimmedLine)
-		} else if leadingWhitespaceCount == 4 { // Translation metadata/value row
+		}
+
+		processTranslationMetadataRow := func() {
 			if currentTranslation == nil {
 				p.reportError("Loose line not in a translation block: " + rawLine)
-			} else {
-				separatorIndex := strings.Index(trimmedLine, "=")
-				if separatorIndex == -1 {
-					p.reportError("Cannot find separator '=' on line: " + rawLine)
-				} else {
-					key := strings.TrimSpace(trimmedLine[0:separatorIndex])
-					value := strings.TrimSpace(trimmedLine[separatorIndex+1:])
-					if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
-						value = value[1 : len(value)-1]
-					}
-					lowerKey := strings.ToLower(key)
-					if lowerKey == "platforms" {
-						currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
-					} else if lowerKey == "tags" {
-						currentTranslation.Tags = util.ComponentsFromCommaSeparatedList(value)
-					} else if lowerKey == "comment" {
-						currentTranslation.Comment = value
-					} else {
-						value = preprocessor.ProcessRawValue(value)
-						segments := preprocessor.ProcessValueSegments(p.segmentsFromTranslationValueString(value))
-						currentTranslation.AddValue(key, segments)
-						set.Languages[key] = true
-					}
-				}
+				return
 			}
+
+			separatorIndex := strings.Index(trimmedLine, "=")
+			if separatorIndex == -1 {
+				p.reportError("Cannot find separator '=' on line: " + rawLine)
+				return
+			}
+
+			key := strings.TrimSpace(trimmedLine[0:separatorIndex])
+			value := strings.TrimSpace(trimmedLine[separatorIndex+1:])
+			if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
+				value = value[1 : len(value)-1]
+			}
+
+			lowerKey := strings.ToLower(key)
+			if lowerKey == "platforms" {
+				currentTranslation.Platforms = p.platformsFromCommaSeparatedString(value)
+			} else if lowerKey == "tags" {
+				currentTranslation.Tags = util.ComponentsFromCommaSeparatedList(value)
+			} else if lowerKey == "comment" {
+				currentTranslation.Comment = value
+			} else {
+				value = preprocessor.ProcessRawValue(value)
+				segments := preprocessor.ProcessValueSegments(p.segmentsFromTranslationValueString(value))
+				currentTranslation.AddValue(key, segments)
+				set.Languages[key] = true
+			}
+		}
+
+		leadingWhitespaceCount := len(util.LeadingWhitespace(rawLine))
+
+		if leadingWhitespaceCount == 0 {
+			processSectionHeadingRow()
+		} else if leadingWhitespaceCount == 2 {
+			processTranslationKeyHeadingRow()
+		} else if leadingWhitespaceCount == 4 {
+			processTranslationMetadataRow()
 		}
 	}
 

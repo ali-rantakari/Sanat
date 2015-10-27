@@ -48,4 +48,6 @@ func TestTextSanitizedForAppleString(t *testing.T) {
 	ass("Per %% cent", "Per % cent")
 	ass("Foo %%@", "Foo %@")
 	ass("Foo %%@ %%@ %%@", "Foo %@ %@ %@")
+
+	ass("Foo\\\"bar", "Foo\"bar")
 }

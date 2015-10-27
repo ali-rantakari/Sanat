@@ -36,7 +36,10 @@ func escapedForComment(s string) string {
 }
 
 func SanitizedForStringValue(text string) string {
-	return strings.Replace(text, "%", "%%", -1)
+	ret := text
+	ret = strings.Replace(ret, "%", "%%", -1)
+	ret = strings.Replace(ret, "\"", "\\\"", -1)
+	return ret
 }
 
 func StringFromSegments(segments []model.Segment) string {

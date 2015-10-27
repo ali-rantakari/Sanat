@@ -53,11 +53,15 @@ __Translation values__ are indented by four spaces:
         en = Log in
         fi = Kirjaudu sisään
 
-Each __translation value__ line must begin with an _ISO 639-1 language name_, followed by a `=` sign, followed by the actual text content of the translation (for the specified language.)
+Each __translation value__ line must begin with a _[BCP 47] language identifier_, followed by a `=` sign, followed by the actual text content of the translation (for the specified language.)
 
 The translation text content may be double quoted:
 
         fi = "Kirjaudu sisään "
+
+
+[BCP 47]: http://tools.ietf.org/html/bcp47
+
 
 #### Platform limits
 

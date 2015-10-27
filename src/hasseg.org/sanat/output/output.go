@@ -14,11 +14,12 @@ import (
 type OutputFunction func(model.TranslationSet, string)
 
 var OutputFunctionsByName = map[string]OutputFunction{
-	"apple":   apple.WriteStringsFiles,
-	"android": android.WriteStringsFiles,
-	"windows": windows.WriteStringsFiles,
-	"json":    json.DumpTranslationSet,
-	"dump":    dump.DumpTranslationSet,
+	"apple":        apple.WriteStringsFiles,
+	"android":      android.WriteStringsFiles,
+	"windows-resx": windows.WriteResxStringsFiles,
+	"windows-resw": windows.WriteReswStringsFiles,
+	"json":         json.DumpTranslationSet,
+	"dump":         dump.DumpTranslationSet,
 }
 
 func OutputFunctionForName(name string) (OutputFunction, error) {

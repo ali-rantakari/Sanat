@@ -148,11 +148,28 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 	return ret
 }
 
-func WriteStringsFiles(set model.TranslationSet, outDirPath string) {
+func WriteResxStringsFiles(set model.TranslationSet, outDirPath string) {
 	for language, _ := range set.Languages {
 		os.MkdirAll(outDirPath, 0777)
 
 		f, err := os.Create(path.Join(outDirPath, "AppResources-"+language+".resx"))
+		if err != nil {
+			panic(err)
+		}
+
+		_, err = f.WriteString(GetStringsFileContents(set, language))
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func WriteReswStringsFiles(set model.TranslationSet, outDirPath string) {
+	for language, _ := range set.Languages {
+		langDirPath := path.Join(outDirPath, language)
+		os.MkdirAll(langDirPath, 0777)
+
+		f, err := os.Create(path.Join(langDirPath, "Resources.resw"))
 		if err != nil {
 			panic(err)
 		}

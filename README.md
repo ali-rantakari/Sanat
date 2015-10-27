@@ -17,13 +17,13 @@ Translates a “master” string resource translation file that looks something 
                                  ~~~~~~~~~~~~~~~~~~~~~~
                                            |
                                         (sanat)
-               ____________________________|_______________________________ ...
-              |                            |                           |
-           Android                     iOS / OS X                   Windows
-    __________|__________    ______________|_____________    __________|_________
-    values-en/strings.xml    en.lproj/Localizable.strings    AppResources-en.resx
-    values-fi/strings.xml    fi.lproj/Localizable.strings    AppResources-fi.resx
-    values-jp/strings.xml    jp.lproj/Localizable.strings    AppResources-jp.resx
+               ____________________________|_____________________________ ...
+              |                            |                         |
+           Android                     iOS / OS X                 Windows
+    __________|__________    ______________|_____________    ________|________
+    values-en/strings.xml    en.lproj/Localizable.strings    en/Resources.resw
+    values-fi/strings.xml    fi.lproj/Localizable.strings    fi/Resources.resw
+    values-jp/strings.xml    jp.lproj/Localizable.strings    jp/Resources.resw
 
 Run the main program with the `--help` argument to see “usage” information.
 

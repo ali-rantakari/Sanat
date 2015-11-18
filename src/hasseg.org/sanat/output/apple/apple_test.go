@@ -1,12 +1,15 @@
 package apple_test
 
 import (
+	"io"
+	"os/exec"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/output/apple"
+	"hasseg.org/sanat/test"
 )
 
 func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {
@@ -50,4 +53,25 @@ func TestTextSanitizedForAppleString(t *testing.T) {
 	ass("Foo %%@ %%@ %%@", "Foo %@ %@ %@")
 
 	ass("Foo\\\"bar", "Foo\"bar")
+}
+
+func isValidPlist(plistString string) bool {
+	cmd := exec.Command("/usr/bin/plutil", "-lint", "-")
+
+	cmdStdin, _ := cmd.StdinPipe()
+
+	cmd.Start()
+	io.WriteString(cmdStdin, plistString)
+	cmdStdin.Close()
+
+	err := cmd.Wait()
+	return (err == nil)
+}
+
+func TestComprehensiveInput(t *testing.T) {
+	set := test.GetComprehensiveTestInputTranslationSet()
+	for language, _ := range set.Languages {
+		output := apple.GetStringsFileContents(set, language)
+		assert.True(t, isValidPlist(output), language)
+	}
 }

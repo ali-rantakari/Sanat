@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -95,6 +96,18 @@ func SanitizedForStringValue(text string) string {
 	return xmlEscaped(text)
 }
 
+func SanitizedForKey(text string) string {
+	// Visual Studio generates C# code from resx (and sometimes resw) format
+	// resource XML files, which means that the keys must be valid C#
+	// identifiers. Let's automatically fix some common issues related to that.
+	//
+	invalidCharsRegexp, err := regexp.Compile("[. ]")
+	if err != nil {
+		panic(err)
+	}
+	return xmlEscaped(invalidCharsRegexp.ReplaceAllString(text, "_"))
+}
+
 func stringFromSegments(segments []model.Segment) string {
 	ret := ""
 	for index, segment := range segments {
@@ -136,7 +149,7 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 				sectionHeadingPrinted = true
 			}
 
-			ret += fmt.Sprintf("  <data name=\"%s\" xml:space=\"preserve\">\n", xmlEscaped(translation.Key))
+			ret += fmt.Sprintf("  <data name=\"%s\" xml:space=\"preserve\">\n", SanitizedForKey(translation.Key))
 			ret += fmt.Sprintf("    <value>%s</value>\n", stringFromSegments(value.Segments))
 			if 0 < len(translation.Comment) {
 				ret += fmt.Sprintf("    <comment>%s</comment>\n", xmlEscaped(translation.Comment))

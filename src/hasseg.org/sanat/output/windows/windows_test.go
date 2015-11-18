@@ -55,6 +55,23 @@ func TestTextSanitizedForWindowsString(t *testing.T) {
 	ass("&lt;Foo&gt;", "<Foo>")
 }
 
+func TestTextSanitizedForWindowsResourceName(t *testing.T) {
+	ass := func(expected string, input string) {
+		assert.Equal(t, expected, windows.SanitizedForKey(input), input)
+	}
+
+	ass("", "")
+	ass("Foo", "Foo")
+
+	// XML-escaping
+	ass("&lt;Foo&gt;", "<Foo>")
+
+	// Keys must be valid C# identifiers — assert that we handle at least
+	// some common cases:
+	ass("Foo_Bar", "Foo.Bar")
+	ass("Foo_Bar", "Foo Bar")
+}
+
 func xmlIsValid(xmlString string) bool {
 	decoder := xml.NewDecoder(bytes.NewBufferString(xmlString))
 	for {

@@ -117,7 +117,8 @@ func NewTextSegment(text string) TextSegment {
 	return TextSegment{Text: text}
 }
 
-func NewFormatSpecifierSegment(dataType TranslationFormatDataType,
+func NewFormatSpecifierSegment(
+	dataType TranslationFormatDataType,
 	numDecimals int,
 	semanticOrderIndex int) FormatSpecifierSegment {
 	return FormatSpecifierSegment{

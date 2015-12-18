@@ -21,7 +21,7 @@ func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 
 	// Data types
 	assert.Equal(t, "%@", val(model.DataTypeObject, -1, -1), "")
-	assert.Equal(t, "%s", val(model.DataTypeString, -1, -1), "")
+	assert.Equal(t, "%@", val(model.DataTypeString, -1, -1), "")
 	assert.Equal(t, "%f", val(model.DataTypeFloat, -1, -1), "")
 	assert.Equal(t, "%d", val(model.DataTypeInteger, -1, -1), "")
 
@@ -36,7 +36,7 @@ func TestAppleFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 	assert.Equal(t, "%.34f", val(model.DataTypeFloat, 34, -1), "")
 	assert.Equal(t, "%3$.1f", val(model.DataTypeFloat, 1, 3), "Decimal count together with semantic order index")
 	assert.Equal(t, "%@", val(model.DataTypeObject, 1, -1), "Decimal count is only for floats")
-	assert.Equal(t, "%s", val(model.DataTypeString, 1, -1), "Decimal count is only for floats")
+	assert.Equal(t, "%@", val(model.DataTypeString, 1, -1), "Decimal count is only for floats")
 	assert.Equal(t, "%d", val(model.DataTypeInteger, 1, -1), "Decimal count is only for floats")
 }
 

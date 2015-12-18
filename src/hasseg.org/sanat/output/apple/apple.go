@@ -19,12 +19,12 @@ func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegmen
 		ret += "." + strconv.Itoa(segment.NumberOfDecimals)
 	}
 	switch segment.DataType {
-	case model.DataTypeString:
-		ret += "s"
 	case model.DataTypeInteger:
 		ret += "d"
 	case model.DataTypeFloat:
 		ret += "f"
+	case model.DataTypeString:
+		fallthrough
 	case model.DataTypeObject:
 		ret += "@"
 	}

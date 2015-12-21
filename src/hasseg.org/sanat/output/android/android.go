@@ -1,8 +1,6 @@
 package android
 
 import (
-	"bytes"
-	"encoding/xml"
 	"fmt"
 	"os"
 	"path"
@@ -10,6 +8,7 @@ import (
 	"strings"
 
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/util"
 )
 
 func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegment) string {
@@ -33,14 +32,8 @@ func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegmen
 	return ret
 }
 
-func xmlEscaped(text string) string {
-	var b bytes.Buffer
-	xml.EscapeText(&b, []byte(text))
-	return b.String()
-}
-
 func SanitizedForString(text string) string {
-	return xmlEscaped(strings.Replace(text, "%", "%%", -1))
+	return util.XMLEscaped(strings.Replace(text, "%", "%%", -1))
 }
 
 func stringFromSegments(segments []model.Segment) string {
@@ -84,7 +77,7 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 					sanitizedForXMLComment(translation.Comment))
 			}
 			ret += fmt.Sprintf("    <string name=\"%s\">%s</string>\n",
-				xmlEscaped(translation.Key),
+				util.XMLEscaped(translation.Key),
 				stringFromSegments(value.Segments))
 		}
 	}

@@ -10,6 +10,7 @@ import (
 
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/output/java"
+	"hasseg.org/sanat/util"
 )
 
 func TestJavaFormatSpecifierStringForFormatSpecifier(t *testing.T) {
@@ -43,12 +44,6 @@ func TestJavaFormatSpecifierStringForFormatSpecifier(t *testing.T) {
 	assert.Equal(t, "{0,number,integer}", val(model.DataTypeInteger, 0, 1, -1), "Decimal count is only for floats")
 }
 
-func xmlEscaped(text string) string {
-	var b bytes.Buffer
-	xml.EscapeText(&b, []byte(text))
-	return b.String()
-}
-
 func TestTextSanitizedForJavaString(t *testing.T) {
 	ass := func(expected string, input string) {
 		assert.Equal(t, expected, java.SanitizedForStringValue(input), input)
@@ -61,18 +56,18 @@ func TestTextSanitizedForJavaString(t *testing.T) {
 
 	// Escaping curly braces with single quotes
 	//
-	ass(xmlEscaped("eka '{}' toka"), "eka {} toka")
-	ass(xmlEscaped("eka '{{}}' toka"), "eka {{}} toka")
-	ass(xmlEscaped("eka '{' toka"), "eka { toka")
-	ass(xmlEscaped("eka '{'0'}' toka"), "eka {0} toka")
-	ass(xmlEscaped("eka '{' keski moro '}' toka"), "eka { keski moro } toka")
+	ass(util.XMLEscaped("eka '{}' toka"), "eka {} toka")
+	ass(util.XMLEscaped("eka '{{}}' toka"), "eka {{}} toka")
+	ass(util.XMLEscaped("eka '{' toka"), "eka { toka")
+	ass(util.XMLEscaped("eka '{'0'}' toka"), "eka {0} toka")
+	ass(util.XMLEscaped("eka '{' keski moro '}' toka"), "eka { keski moro } toka")
 
 	// Escaping single quotes themselves
 	//
-	ass(xmlEscaped("eka '' toka"), "eka ' toka")
-	ass(xmlEscaped("eka '''{}''' toka"), "eka '{}' toka")
-	ass(xmlEscaped("eka '{''}' toka"), "eka {'} toka")
-	ass(xmlEscaped("eka '{''''}' toka"), "eka {''} toka")
+	ass(util.XMLEscaped("eka '' toka"), "eka ' toka")
+	ass(util.XMLEscaped("eka '''{}''' toka"), "eka '{}' toka")
+	ass(util.XMLEscaped("eka '{''}' toka"), "eka {'} toka")
+	ass(util.XMLEscaped("eka '{''''}' toka"), "eka {''} toka")
 
 	// XML-escaping
 	ass("&lt;Foo&gt;", "<Foo>")

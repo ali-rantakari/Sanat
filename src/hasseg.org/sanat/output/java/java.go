@@ -1,8 +1,6 @@
 package java
 
 import (
-	"bytes"
-	"encoding/xml"
 	"fmt"
 	"os"
 	"path"
@@ -11,6 +9,7 @@ import (
 	"strings"
 
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/util"
 )
 
 func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegment, index int) string {
@@ -35,12 +34,6 @@ func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegmen
 	return ret
 }
 
-func xmlEscaped(text string) string {
-	var b bytes.Buffer
-	xml.EscapeText(&b, []byte(text))
-	return b.String()
-}
-
 var _moustacheRegexp *regexp.Regexp = nil
 
 func SanitizedForStringValue(text string) string {
@@ -60,11 +53,11 @@ func SanitizedForStringValue(text string) string {
 			s += "''" + p
 		}
 	}
-	return xmlEscaped(s)
+	return util.XMLEscaped(s)
 }
 
 func SanitizedForKey(text string) string {
-	return xmlEscaped(text)
+	return util.XMLEscaped(text)
 }
 
 func stringFromSegments(segments []model.Segment) string {

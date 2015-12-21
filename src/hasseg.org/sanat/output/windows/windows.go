@@ -1,8 +1,6 @@
 package windows
 
 import (
-	"bytes"
-	"encoding/xml"
 	"fmt"
 	"os"
 	"path"
@@ -11,6 +9,7 @@ import (
 	"strings"
 
 	"hasseg.org/sanat/model"
+	"hasseg.org/sanat/util"
 )
 
 const xmlHeaderString string = `  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -86,14 +85,8 @@ func FormatSpecifierStringForFormatSpecifier(segment model.FormatSpecifierSegmen
 	return ret
 }
 
-func xmlEscaped(text string) string {
-	var b bytes.Buffer
-	xml.EscapeText(&b, []byte(text))
-	return b.String()
-}
-
 func SanitizedForStringValue(text string) string {
-	return xmlEscaped(text)
+	return util.XMLEscaped(text)
 }
 
 func SanitizedForKey(text string) string {
@@ -105,7 +98,7 @@ func SanitizedForKey(text string) string {
 	if err != nil {
 		panic(err)
 	}
-	return xmlEscaped(invalidCharsRegexp.ReplaceAllString(text, "_"))
+	return util.XMLEscaped(invalidCharsRegexp.ReplaceAllString(text, "_"))
 }
 
 func stringFromSegments(segments []model.Segment) string {
@@ -152,7 +145,7 @@ func GetStringsFileContents(set model.TranslationSet, language string) string {
 			ret += fmt.Sprintf("  <data name=\"%s\" xml:space=\"preserve\">\n", SanitizedForKey(translation.Key))
 			ret += fmt.Sprintf("    <value>%s</value>\n", stringFromSegments(value.Segments))
 			if 0 < len(translation.Comment) {
-				ret += fmt.Sprintf("    <comment>%s</comment>\n", xmlEscaped(translation.Comment))
+				ret += fmt.Sprintf("    <comment>%s</comment>\n", util.XMLEscaped(translation.Comment))
 			}
 			ret += "  </data>\n"
 		}

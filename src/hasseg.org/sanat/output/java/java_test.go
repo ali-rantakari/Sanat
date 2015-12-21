@@ -7,6 +7,7 @@ import (
 
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/output/java"
+	"hasseg.org/sanat/test"
 	"hasseg.org/sanat/util"
 )
 
@@ -88,5 +89,13 @@ func TestOverallXMLFileGeneration(t *testing.T) {
 		ts := makeTranslationSet("Sektion -- two dashes", "Foo", lang, "Some text")
 		x := java.GetPropertiesFileContents(ts, lang)
 		assert.True(t, util.XMLIsValid(x), "-- in XML comment (section name)")
+	}
+}
+
+func TestComprehensiveInput(t *testing.T) {
+	set := test.GetComprehensiveTestInputTranslationSet()
+	for language, _ := range set.Languages {
+		output := java.GetPropertiesFileContents(set, language)
+		assert.True(t, util.XMLIsValid(output), language)
 	}
 }

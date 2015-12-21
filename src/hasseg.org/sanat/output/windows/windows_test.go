@@ -1,15 +1,13 @@
 package windows_test
 
 import (
-	"bytes"
-	"encoding/xml"
-	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"hasseg.org/sanat/model"
 	"hasseg.org/sanat/output/windows"
+	"hasseg.org/sanat/util"
 )
 
 func TestWindowsFormatSpecifierStringForFormatSpecifier(t *testing.T) {
@@ -72,20 +70,6 @@ func TestTextSanitizedForWindowsResourceName(t *testing.T) {
 	ass("Foo_Bar", "Foo Bar")
 }
 
-func xmlIsValid(xmlString string) bool {
-	decoder := xml.NewDecoder(bytes.NewBufferString(xmlString))
-	for {
-		_, err := decoder.Token()
-		if err == nil {
-			continue
-		} else if err == io.EOF {
-			break
-		}
-		return false
-	}
-	return true
-}
-
 func makeTranslationSet(sectionName string, keyName string, language string, value string) model.TranslationSet {
 	ts := model.NewTranslationSet()
 	ts.AddSection(sectionName).AddTranslation(keyName).AddValue(language, []model.Segment{model.NewTextSegment(value)})
@@ -97,12 +81,12 @@ func TestOverallXMLFileGeneration(t *testing.T) {
 		lang := "en"
 		ts := makeTranslationSet("Sektion", "Foo", lang, "Some text")
 		x := windows.GetStringsFileContents(ts, lang)
-		assert.True(t, xmlIsValid(x), "")
+		assert.True(t, util.XMLIsValid(x), "")
 	}
 	{
 		lang := "en"
 		ts := makeTranslationSet("Sektion -- two dashes", "Foo", lang, "Some text")
 		x := windows.GetStringsFileContents(ts, lang)
-		assert.True(t, xmlIsValid(x), "-- in XML comment (section name)")
+		assert.True(t, util.XMLIsValid(x), "-- in XML comment (section name)")
 	}
 }

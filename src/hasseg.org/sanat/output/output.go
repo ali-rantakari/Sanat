@@ -7,6 +7,7 @@ import (
 	"hasseg.org/sanat/output/android"
 	"hasseg.org/sanat/output/apple"
 	"hasseg.org/sanat/output/dump"
+	"hasseg.org/sanat/output/java"
 	"hasseg.org/sanat/output/json"
 	"hasseg.org/sanat/output/windows"
 )
@@ -18,6 +19,7 @@ var OutputFunctionsByName = map[string]OutputFunction{
 	"android":      android.WriteStringsFiles,
 	"windows-resx": windows.WriteResxStringsFiles,
 	"windows-resw": windows.WriteReswStringsFiles,
+	"java":         java.WritePropertiesFiles,
 	"json":         json.DumpTranslationSet,
 	"dump":         dump.DumpTranslationSet,
 }

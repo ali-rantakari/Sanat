@@ -79,6 +79,7 @@ The currently supported values are:
 - `apple` (Apple platforms; iOS and OS X)
 - `android`
 - `windows` (.NET)
+- `java` (XML Properties files with MessageFormat syntax)
 
 #### Comments
 

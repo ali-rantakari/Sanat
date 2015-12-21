@@ -23,6 +23,7 @@ const (
 	PlatformApple
 	PlatformAndroid
 	PlatformWindows
+	PlatformJava
 )
 
 // TextSegment is a piece of a translation string value

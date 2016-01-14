@@ -35,7 +35,7 @@ Translation File Syntax
 
 _(Sections are optional — translation files don't have to contain sections.)_
 
-Section titles begin with least three `=` symbols at the beginning of a line:
+Section titles begin with at least three `=` symbols at the beginning of a line:
 
     === Login view
 
